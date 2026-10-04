@@ -1,0 +1,1 @@
+The pool runtime is 24,399 bytes, 177 below EIP-170. The generic verifier is 5,139 bytes and the E2 kernel is 8,140 bytes. All use Solidity 0.8.26, via-IR, optimizer runs 10, and Cancun. These are compiled runtime-template sizes; deployed addresses and immutable values vary.

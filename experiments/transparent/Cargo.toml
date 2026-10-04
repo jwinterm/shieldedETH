@@ -1,0 +1,27 @@
+[package]
+name = "seth-transparent-experiment"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+anyhow = "1.0"
+ark-bn254 = { version = "0.5.0", default-features = false, features = ["scalar_field"] }
+ark-ff = "0.5"
+ark-serialize = "0.5"
+serde_json = "1.0"
+sha3 = "0.10"
+sha2 = "0.10"
+hex = "0.4"
+# The bootstrap script checks out this exact upstream revision. Keeping the
+# frontend out avoids pulling Noir into a Circom R1CS experiment.
+provekit-common = { path = "../../build/transparent/vendor/provekit/provekit/common" }
+provekit-prover = { path = "../../build/transparent/vendor/provekit/provekit/prover" }
+provekit-verifier = { path = "../../build/transparent/vendor/provekit/provekit/verifier" }
+whir = { git = "https://github.com/worldfnd/whir.git", rev = "78e9460420da0954768feb1e52f581a0529c2124", features = ["rs_in_order"] }
+spongefish = { git = "https://github.com/arkworks-rs/spongefish", rev = "fcc277f8a857fdeeadd7cca92ab08de63b1ff1a1", features = ["ark-ff", "sha2", "keccak"] }
+blake3 = "=1.8.3"
+
+[profile.release]
+opt-level = 3
+lto = "thin"

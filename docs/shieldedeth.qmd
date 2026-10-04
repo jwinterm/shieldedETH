@@ -1,0 +1,465 @@
+---
+title: "ShieldedETH: An Immutable Multi-Asset Shielded Payment Pool for Ethereum"
+author:
+  - name: Anonymous
+date: 2026-10-03
+abstract: |
+  ShieldedETH is a research implementation of an immutable, multi-asset shielded payment pool for Ethereum L1, with no administrative key or protocol percentage fee. Deposits bind a hiding partial commitment, amount and asset into a SHA-256 queue accumulator without requiring a proof or on-chain Poseidon evaluation. Permissionless insertion proofs advance a depth-32 note tree by up to sixteen entries. At low volume, a direct spend can absorb one pending deposit and insert its own outputs. Independent transfer proofs share verification through a randomized Groth16 batch equation using n+3 pairings rather than 4n. Pure transfers hide their asset in public contract fields, subject to recipient, broadcaster and traffic-analysis leakage. We implement the v0.8 contracts, circuits, reference model and adversarial tests, and measure full signed transactions and actual full-depth proofs in a local Cancun EVM. Native and hashed statement profiles are compared using generated benchmark evidence. The evaluated Groth16 backend requires trusted setup and uses development-only keys. It is a research baseline that does not meet the production requirement of no trusted setup. No transparent replacement, production deployment or external audit is claimed.
+csl: ieee.csl
+keywords: [zero-knowledge proofs, shielded payments, Ethereum, Groth16, batch verification, Merkle accumulators]
+format:
+  pdf:
+    documentclass: article
+    classoption: [twocolumn]
+    papersize: letter
+    fontsize: 10pt
+    fontfamily: mathptmx
+    pdf-engine: tectonic
+    geometry: [top=0.75in, bottom=0.85in, left=0.7in, right=0.7in, columnsep=0.24in]
+    number-sections: true
+    tbl-pos: t
+    fig-pos: t
+    colorlinks: true
+    link-citations: true
+    indent: true
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{array}
+          \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+          \usepackage{amssymb}
+          \usepackage{tikz}
+          \usetikzlibrary{arrows.meta,positioning,calc}
+          \usepackage{pgfplots}
+          \pgfplotsset{compat=1.16}
+          \usepackage[font=small,labelfont=bf]{caption}
+          \usepackage{microtype}
+          \setlength{\abovedisplayskip}{4pt}\setlength{\belowdisplayskip}{4pt}
+          \newcommand{\Hash}{\mathsf{H}_{253}}
+          \newcommand{\Pos}[1]{\mathsf{P}_{\scriptscriptstyle #1}}
+references:
+  - id: zerocash
+    type: paper-conference
+    title: "Zerocash: Decentralized anonymous payments from Bitcoin"
+    author: [{family: Ben-Sasson, given: Eli}, {family: Chiesa, given: Alessandro}, {family: Garman, given: Christina}, {family: Green, given: Matthew}, {family: Miers, given: Ian}, {family: Tromer, given: Eran}, {family: Virza, given: Madars}]
+    container-title: "IEEE Symposium on Security and Privacy"
+    issued: {year: 2014}
+    page: 459-474
+  - id: zcashspec
+    type: report
+    title: "Zcash protocol specification"
+    author: [{family: Hopwood, given: Daira-Emma}, {family: Bowe, given: Sean}, {family: Hornby, given: Taylor}, {family: Wilcox, given: Nathan}]
+    publisher: "Electric Coin Company"
+    issued: {year: 2024}
+  - id: groth16
+    type: paper-conference
+    title: "On the size of pairing-based non-interactive arguments"
+    author: [{family: Groth, given: Jens}]
+    container-title: "EUROCRYPT"
+    issued: {year: 2016}
+    page: 305-326
+  - id: poseidon
+    type: paper-conference
+    title: "Poseidon: A new hash function for zero-knowledge proof systems"
+    author: [{family: Grassi, given: Lorenzo}, {family: Khovratovich, given: Dmitry}, {family: Rechberger, given: Christian}, {family: Roy, given: Arnab}, {family: Schofnegger, given: Markus}]
+    container-title: "USENIX Security Symposium"
+    issued: {year: 2021}
+  - id: shieldedbtc
+    type: article
+    title: "Shielded Bitcoin: Private transfers on the Bitcoin L1"
+    author: [{family: Shikhelman, given: Clara}, {family: Komarov, given: Mikhail}, {family: Moskvin, given: Aleksei}]
+    publisher: "[[alloc] init]"
+    issued: {year: 2026, month: 9}
+    note: "Preprint"
+  - id: tornado
+    type: report
+    title: "Tornado Cash privacy solution, version 1.4"
+    author: [{family: Pertsev, given: Alexey}, {family: Semenov, given: Roman}, {family: Storm, given: Roman}]
+    issued: {year: 2019}
+  - id: nova
+    type: software
+    title: "Tornado Nova: Shielded pool with arbitrary amounts and internal transfers"
+    author: [{literal: "Tornado Cash developers"}]
+    URL: "https://github.com/tornadocash/tornado-nova"
+    issued: {year: 2021}
+  - id: railgun
+    type: webpage
+    title: "RAILGUN documentation: Fees, broadcasters, and Private Proofs of Innocence"
+    author: [{literal: "RAILGUN contributors"}]
+    URL: "https://docs.railgun.org"
+    issued: {year: 2026}
+  - id: privacypools
+    type: article-journal
+    title: "Blockchain privacy and regulatory compliance: Towards a practical equilibrium"
+    author: [{family: Buterin, given: Vitalik}, {family: Illum, given: Jacob}, {family: Nadler, given: Matthias}, {family: Schär, given: Fabian}, {family: Soleimani, given: Ameen}]
+    container-title: "Blockchain: Research and Applications"
+    volume: 5
+    issue: 1
+    issued: {year: 2024}
+  - id: aztec
+    type: webpage
+    title: "Aztec network documentation"
+    author: [{literal: "Aztec Labs"}]
+    URL: "https://docs.aztec.network"
+    issued: {year: 2026}
+  - id: bgr98
+    type: paper-conference
+    title: "Fast batch verification for modular exponentiation and digital signatures"
+    author: [{family: Bellare, given: Mihir}, {family: Garay, given: Juan A.}, {family: Rabin, given: Tal}]
+    container-title: "EUROCRYPT"
+    issued: {year: 1998}
+    page: 236-250
+  - id: ferrara09
+    type: paper-conference
+    title: "Practical short signature batch verification"
+    author: [{family: Ferrara, given: Anna Lisa}, {family: Green, given: Matthew}, {family: Hohenberger, given: Susan}, {family: Pedersen, given: Michael Østergaard}]
+    container-title: "CT-RSA"
+    issued: {year: 2009}
+    page: 309-324
+  - id: snarkpack
+    type: paper-conference
+    title: "SnarkPack: Practical SNARK aggregation"
+    author: [{family: Gailly, given: Nicolas}, {family: Maller, given: Mary}, {family: Nitulescu, given: Anca}]
+    container-title: "Financial Cryptography and Data Security"
+    issued: {year: 2022}
+  - id: exTNFS
+    type: paper-conference
+    title: "Extended tower number field sieve: A new complexity for the medium prime case"
+    author: [{family: Kim, given: Taechan}, {family: Barbulescu, given: Razvan}]
+    container-title: "CRYPTO"
+    issued: {year: 2016}
+    page: 543-571
+  - id: bd19
+    type: article-journal
+    title: "Updating key size estimations for pairings"
+    author: [{family: Barbulescu, given: Razvan}, {family: Duquesne, given: Sylvain}]
+    container-title: "Journal of Cryptology"
+    volume: 32
+    issued: {year: 2019}
+    page: 1298-1336
+  - id: bksv21
+    type: paper-conference
+    title: "Another look at extraction and randomization of Groth's zk-SNARK"
+    author: [{family: Baghery, given: Karim}, {family: Kohlweiss, given: Markulf}, {family: Siim, given: Janno}, {family: Volkhov, given: Mikhail}]
+    container-title: "Financial Cryptography and Data Security"
+    issued: {year: 2021}
+  - id: fiatshamir
+    type: paper-conference
+    title: "How to prove yourself: Practical solutions to identification and signature problems"
+    author: [{family: Fiat, given: Amos}, {family: Shamir, given: Adi}]
+    container-title: "CRYPTO"
+    issued: {year: 1986}
+    page: 186-194
+  - id: circom
+    type: article-journal
+    title: "Circom: A circuit description language for building zero-knowledge applications"
+    author: [{family: Bellés-Muñoz, given: Marta}, {family: Isabel, given: Miguel}, {family: Muñoz-Tapia, given: Jose Luis}, {family: Rubio, given: Albert}, {family: Baylina, given: Jordi}]
+    container-title: "IEEE Transactions on Dependable and Secure Computing"
+    volume: 20
+    issue: 6
+    issued: {year: 2023}
+  - id: eip197
+    type: report
+    title: "EIP-197: Precompiled contracts for optimal ate pairing check on the elliptic curve alt_bn128"
+    author: [{family: Buterin, given: Vitalik}, {family: Reitwiessner, given: Christian}]
+    publisher: "Ethereum Improvement Proposals"
+    issued: {year: 2017}
+  - id: eip1108
+    type: report
+    title: "EIP-1108: Reduce alt_bn128 precompile gas costs"
+    author: [{family: Cardozo, given: Antonio Salazar}, {family: Williamson, given: Zachary}]
+    publisher: "Ethereum Improvement Proposals"
+    issued: {year: 2018}
+  - id: eip170
+    type: report
+    title: "EIP-170: Contract code size limit"
+    author: [{family: Buterin, given: Vitalik}]
+    publisher: "Ethereum Improvement Proposals"
+    issued: {year: 2016}
+  - id: eip1153
+    type: report
+    title: "EIP-1153: Transient storage opcodes"
+    author: [{family: Akhunov, given: Alexey}, {family: Salem, given: Moody}]
+    publisher: "Ethereum Improvement Proposals"
+    issued: {year: 2018}
+  - id: rfc9496
+    type: report
+    title: "The ristretto255 and decaf448 groups"
+    author: [{family: de Valence, given: Henry}, {family: Grigg, given: Jack}, {family: Hamburg, given: Mike}, {family: Lovecruft, given: Isis}, {family: Tankersley, given: George}, {family: Valsorda, given: Filippo}]
+    publisher: "IETF"
+    number: "RFC 9496"
+    issued: {year: 2023}
+  - id: rfc5869
+    type: report
+    title: "HMAC-based extract-and-expand key derivation function (HKDF)"
+    author: [{family: Krawczyk, given: Hugo}, {family: Eronen, given: Pasi}]
+    publisher: "IETF"
+    number: "RFC 5869"
+    issued: {year: 2010}
+  - id: rfc8439
+    type: report
+    title: "ChaCha20 and Poly1305 for IETF protocols"
+    author: [{family: Nir, given: Yoav}, {family: Langley, given: Adam}]
+    publisher: "IETF"
+    number: "RFC 8439"
+    issued: {year: 2018}
+  - id: gugger20
+    type: report
+    title: "Bitcoin–Monero cross-chain atomic swap"
+    author: [{family: Gugger, given: Joël}]
+    publisher: "IACR Cryptology ePrint Archive"
+    number: "2020/1126"
+    issued: {year: 2020}
+---
+
+# Introduction {#sec-intro}
+
+Account-based blockchains publish every transfer's sender, recipient and amount. Shielded-note systems, introduced by Zerocash [@zerocash] and refined in Zcash [@zcashspec], replace balances with hiding commitments to notes, mark spends with nullifiers, and prove conservation in zero knowledge. Deployments on Ethereum face constraints that a dedicated chain does not: every hash, storage write and pairing is metered, the contract code size is bounded [@eip170], and any administrative key or upgrade path is a standing point of control over user funds.
+
+Existing Ethereum systems resolve these constraints differently. Tornado Cash Classic [@tornado] uses fixed denominations and no internal transfers. Tornado Nova [@nova] supports arbitrary amounts and internal transfers, but runs on a separate chain behind a bridge and is upgradeable by governance. RAILGUN [@railgun] supports many assets on L1, but charges a 0.25% fee on shielding and on unshielding and is governed. Rollups such as Aztec [@aztec] generalize to private programmability under a different trust and settlement model.
+
+This paper presents ShieldedETH, a payment pool with three fixed properties: immutable contracts with no owner, pause or upgrade function; no percentage or deployer fee; and settlement on Ethereum L1. Within those constraints, the design targets execution cost and low-volume usability. The contributions are:
+
+1. **Deposits without proofs or on-chain Poseidon.** The contract records the deposited amount, the asset and a hiding partial commitment; the final note commitment is computed later, inside the proof that adds the note to the tree (@sec-deposits).
+2. **Tree updates moved out of the contract.** New notes wait in a queue that costs one SHA-256 call per transaction. Any party can add a batch of queued notes to the tree with one proof, and a fixed schedule guarantees that a valid next batch always exists. When nothing else is waiting, a spend updates the tree itself (*direct mode*), including a deposit made moments earlier that the same proof spends (@sec-overview, @sec-queue, @sec-direct).
+3. **Hidden-asset notes.** One constraint makes the asset public only when value leaves the pool (@sec-spend).
+4. **Batch-verified transfers.** A randomized Groth16 batch equation checks $n$ independent user proofs with $n+3$ pairings. A user's proof is valid whether submitted alone or in a batch (@sec-batch). A public-input hashing profile is analyzed as a per-circuit alternative (@sec-profiles).
+5. **Implemented relations and reproducible evidence.** Actual depth-32 Groth16 proofs run through the pool, with an independent plaintext liability ledger, adversarial rejection tests, complete transaction receipts and desktop proving measurements (@sec-impl, @sec-eval).
+
+The production design additionally requires no trusted setup. The evaluated Groth16 implementation does not meet this requirement; its measurements establish a baseline for evaluating a future transparent replacement, not an eligible production backend.
+
+The design adapts the note model and leakage analysis of Shielded Bitcoin [@shieldedbtc]. That protocol derives state by replaying Bitcoin transactions because Bitcoin cannot verify proofs; on Ethereum, the contract verifies proofs directly and stores the authenticated state.
+
+# Background and Related Work
+
+**Shielded notes.** A note is an opening $(v,a,\ldots)$ of a hiding, binding commitment $c$ held in an append-only Merkle tree. Spending proves knowledge of an opening under a recent root, a spend key, and a nullifier derived deterministically from the note; the verifier records the nullifier to prevent double spends. Zcash Sapling binds the nullifier to the note's tree position so that duplicate commitments cannot suppress each other ("Faerie Gold") [@zcashspec]. ShieldedETH uses the same rule.
+
+**Ethereum mixers and pools.** Tornado Classic deposits insert a MiMC commitment into an on-chain Merkle tree, and withdrawals prove membership [@tornado]. Nova adds arbitrary amounts, change outputs and internal transfers [@nova]. Both hash the Merkle path in the contract on every insertion, so tree maintenance dominates deposit cost. RAILGUN supports ERC-20, ERC-721 and ERC-1155 assets and a network of paid broadcasters [@railgun]. Privacy Pools [@privacypools] add association-set proofs intended to support regulatory compliance; compliance mechanisms are outside the scope of this paper.
+
+**Proof aggregation.** Recursive composition and inner-product aggregation such as SnarkPack [@snarkpack] reduce many proofs to one, but they require a different proof system for the outer proof or a large verifier. Small-exponent batch verification [@bgr98; @ferrara09] instead combines verification equations with random coefficients. For Groth16 [@groth16], one pairing per proof remains, but the fixed pairings and the public-input multi-scalar multiplication are shared. ShieldedETH applies this test on-chain to unmodified user proofs.
+
+**Deferred insertion.** Keeping the tree out of contract execution and advancing its root by proof is common in rollups and identity registries. ShieldedETH combines it with proofless deposits, a schedule that guarantees progress, and an idle-queue path that needs no separate batch proof at low volume.
+
+# Model and Goals
+
+**Parties.** Users hold a seed from which spend, view and recovery keys derive. Optional *broadcasters* and *aggregators* submit users' transactions and are paid by a shielded output. *Batchers* submit insertion proofs and earn public ETH tips. Indexers serve public data. None of these parties receives spend or view keys.
+
+**Adversary.** The adversary controls any number of users, broadcasters, batchers and indexers; observes the chain and mempool; front-runs and reorders transactions; submits malformed inputs; and deploys arbitrary contracts. It cannot break SHA-256 or Poseidon collision resistance, the knowledge soundness of Groth16 over BN254, or the discrete-logarithm assumptions of ristretto255.
+
+**Goals.**
+(G1) *Balance:* for every asset, total spendable note value never exceeds the deposits of that asset minus its withdrawals.
+(G2) *Spend authority:* only the holder of a note's spend key can nullify it.
+(G3) *Transaction privacy:* a pure transfer hides input membership, amounts and asset from an observer of contract fields, subject to the leakage and observer capabilities in @sec-security.
+(G4) *Liveness:* any pending entry can be inserted by any party willing to pay gas.
+(G5) *No privileged control:* no key can alter rules, pause operations or move backing.
+
+**Non-goals.** The design does not guarantee ciphertext delivery (a sender can burn value by encrypting badly), hide deposit and withdrawal amounts, or provide cross-asset transfers inside one proof.
+
+```{=latex}
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\scriptsize,
+  box/.style={draw, rounded corners=1pt, align=center, inner sep=2pt, minimum height=7mm},
+  arr/.style={-{Stealth[length=1.5mm]}, semithick}]
+\node[box, text width=21mm] (dep) at (0,0) {Deposit\\ no proof, no Poseidon};
+\node[box, text width=21mm] (qs) at (26mm,0) {Queued spend\\ single or batched};
+\node[box, text width=21mm] (ds) at (54mm,0) {Direct spend\\ idle queue only};
+\node[box, text width=47mm] (q) at (13mm,-13mm) {Queue: SHA-256 accumulator\\ one entry = four leaf positions};
+\node[box, text width=47mm] (ins) at (13mm,-26mm) {Batch insertion proof\\ permissionless, 1--16 entries};
+\node[box, text width=74mm] (root) at (27mm,-39mm) {Note-tree root ring (current root + 1{,}023)};
+\draw[arr] (dep.south) -- (dep.south |- q.north);
+\draw[arr] (qs.south) -- (qs.south |- q.north);
+\draw[arr] (q) -- (ins);
+\draw[arr] (ins.south) -- (ins.south |- root.north);
+\draw[arr] (ds.south) -- node[pos=0.68, left, align=right, font=\tiny] {self-insert\\ own outputs} (ds.south |- root.north);
+\draw[arr, dashed] (q.east) -- node[above, font=\tiny] {absorb $\le$1 deposit} (q.east -| ds.south);
+\end{tikzpicture}
+\caption{State flow. Deposits and queued spends append entries to a SHA-256 accumulator, and insertion proofs advance the note-tree root. A direct spend absorbs at most one pending deposit and inserts its own outputs in the same call. All spends record their nullifiers immediately.}
+\label{fig:flow}
+\end{figure}
+```
+
+# Design {#sec-design}
+
+## Note-tree maintenance {#sec-overview}
+
+A note can be spent only after its commitment is a leaf of the Merkle tree whose root the contract stores. Adding a leaf changes every node on the path from that leaf to the root: 32 Poseidon evaluations at depth 32. Tornado Classic and Nova recompute this path inside the contract on every deposit or transaction, which adds tree-hashing work to those operations. We do not benchmark those systems in this evaluation. ShieldedETH keeps the contract out of that computation and has it check proofs of tree updates instead.
+
+The contract keeps three pieces of state for this purpose: a *queue* of entries not yet in the tree, the current *root*, and a ring of recent roots that spends may reference. Each deposit or transfer appends one entry to the queue, which costs one SHA-256 call and a few storage writes. The root then advances in one of two ways (Figure \ref{fig:flow}):
+
+- **Batch insertion.** Any party, typically a *batcher* paid by tips, takes the next 1–16 queued entries and submits one proof stating "appending these entries to the tree with root $R$ yields root $R'$". The contract checks that the entries are exactly the next ones in its queue and that the proof is valid, then stores $R'$. One proof covers up to 16 entries.
+- **Direct (self-) insertion.** If no other entries are waiting (apart from at most one deposit and any exits), a spender's own proof also computes the root obtained by appending the spender's outputs, and the waiting deposit if present. The transaction then updates the tree itself, and no batcher or second transaction is involved.
+
+Queued notes become spendable once a batch has inserted them; notes created in direct mode are spendable immediately. Nullifiers are recorded in both cases when the spend executes, so double spends are rejected regardless of insertion timing.
+
+## Notes, keys and delivery {#sec-notes}
+
+All note hashing uses Poseidon [@poseidon] with the domain tag in the capacity element: $\Pos{t}(x_1,\ldots,x_m)$ is the first output of the width-$(m{+}1)$ permutation initialized with $t$. From a spend scalar $sk$, the wallet derives $ak=\Pos{AK}(sk)$ and $nk=\Pos{NK}(sk)$. A diversified address with 11-byte diversifier $d$ contains $\mathit{own}_d=\Pos{OWN}(ak,d)$ and a ristretto255 [@rfc9496] key $pk_d=[ivk]\,H_d$, where $H_d$ hashes $d$ to the group. A note of value $v<2^{128}$ in asset $a$ with randomness $\rho$ is committed as
+
+$$
+\begin{aligned}
+p &= \Pos{PART}(\mathit{own}_d,\rho),\\
+c &= \Pos{CM}(p,v,a).
+\end{aligned}
+$$
+
+The nullifier of the note at leaf position $\pi$ is $\mathit{nf}=\Pos{NF}(\delta,nk,c,\pi)$, where $\delta$ is an immutable 253-bit pool domain. Binding $\pi$ gives each funded commitment occurrence a distinct nullifier.
+
+Each output carries a 109-byte ciphertext: an ephemeral key $epk=[esk]H_d$ with $esk$ derived from $\rho$, followed by ChaCha20-Poly1305 [@rfc8439] under an HKDF [@rfc5869] key over $[esk]pk_d$. A recipient detects notes with one scalar multiplication per output, and accepts a note only if it reconstructs $c$. A 400-byte batch encrypted under the sender's outgoing key allows seed-only recovery of sent notes.
+
+## Proofless deposits {#sec-deposits}
+
+A deposit supplies $(a,p,v,\mathit{ct})$. The contract checks that $p$ is a canonical nonzero field element and that the asset is on the allowlist, collects exactly $v$ units, and appends a queue *record* whose words are $(p,v,a,0)$. No proof is verified and no Poseidon is evaluated on-chain. The insertion circuit computes the leaf $c=\Pos{CM}(p,v,a)$ from the record words. Because the record is bound by the accumulator (@sec-queue), a prover can insert no leaf other than the one the contract accepted. A depositor who publishes a $p$ without a valid opening loses those funds; no depositor can create a note worth more than $v$, or a note in a different asset.
+
+For token deposits, the contract checks that the pool balance rose by exactly $v$ and the sender's balance fell by exactly $v$, which rejects fee-on-transfer and short-delivering tokens. `depositMany` accepts up to 64 items, pulls each asset's total once, and emits records byte-identical to single deposits.
+
+## Queue, accumulator and proved insertion {#sec-queue}
+
+Each deposit, transfer and exit appends one *entry* $e$ that owns leaf positions $4e,\ldots,4e{+}3$ of a depth-32 tree. With $\Hash(x)=x \bmod 2^{253}$ applied to a 32-byte digest,
+
+$$
+\begin{aligned}
+\mathit{acc}_{e+1} = \Hash\big(\mathrm{SHA256}(&\mathit{acc}_e \,\|\, \kappa \,\|\, w_0\|w_1\|w_2\|w_3\\
+&\|\, h_{\mathrm{ext}} \,\|\, \tau)\big),
+\end{aligned}
+$$
+
+where $\kappa$ is the entry kind, $w_i$ are record words, $h_{\mathrm{ext}}$ is the hash of the canonical transaction body, and $\tau$ is the insertion tip. Each record is 209 bytes (four SHA-256 blocks), and the SHA-256 precompile makes a chain step cost a few hundred gas.
+
+An insertion proof for $k\le 16$ consecutive entries has one public input, the hash of the statement
+
+$$
+\begin{aligned}
+(&\text{pool},\text{chain},\text{circuit},R_{\mathrm{old}},R_{\mathrm{new}},\\
+&\mathit{start},k,\mathit{acc}_{\mathrm{start}},\mathit{acc}_{\mathrm{end}},\textstyle\sum\tau,\beta).
+\end{aligned}
+$$
+
+The circuit recomputes the record chain and derives each entry's four leaves (completing deposit commitments). It proves that each depth-2 slot was empty under the running root and replaces it along the same path. The beneficiary $\beta$ is inside the hash, so a copied proof cannot redirect the tips.
+
+**Guaranteed progress.** The contract retains the accumulator at the inserted prefix, at every multiple of 16, and for the last 1,024 counts. For inserted prefix $s$ and queue length $n>s$, the step to $\min(n, 16\lfloor s/16\rfloor+16)$ always has both endpoints retained. Any backlog therefore drains in valid batches of 1–16 entries.
+
+## Direct mode {#sec-direct}
+
+At low volume, a dedicated batch proof costs about as much as the transfer it inserts, and nobody may be running a batcher. Direct mode applies when the pending prefix consists only of exits (zero subtrees, which leave the root unchanged) and at most one deposit. The caller supplies the pending records. The contract re-hashes them from the stored inserted-prefix accumulator to the queue head, and passes the deposit tuple $(i_{\mathrm{abs}},p,v,a)$, or zeros, as public inputs. The circuit then:
+
+(i) proves slot $i_{\mathrm{abs}}$ empty under the current root $R_0$ and inserts the deposit subtree, giving $R_1$;
+(ii) proves every spent input's membership under $R_1$;
+(iii) proves the own slot empty under $R_1$ and inserts the four output commitments, giving the public root $R_2$.
+
+Checking membership under $R_1$ is what lets a user spend a deposit that was still waiting in the queue: the same proof first adds the deposit to the tree and then spends it, in one call and without a batcher. The reward beneficiary and the expected queue state are part of the hashed transaction body, so a front-runner cannot reassign the absorbed deposit's tip. A stale call reverts before proof verification.
+
+## Spend relation and hidden assets {#sec-spend}
+
+A transfer consumes two (or eight) inputs and creates four outputs. Every enabled input and every output commits to the same private asset $a$. With public withdrawal $W$ and $\textsf{publicAmount}=0$ if $W=0$, else $r-W$ (the field modulus), the circuit enforces
+
+$$
+\begin{aligned}
+\textstyle\sum v_{\mathrm{in}} + \textsf{publicAmount} &= \textstyle\sum v_{\mathrm{out}},\\
+\textsf{publicAmount}\cdot(a-\textsf{publicAsset}) &= 0.
+\end{aligned}
+$$
+
+The second equation forces $\textsf{publicAsset}=a$ whenever value leaves the pool. For $W=0$ the contract requires $\textsf{publicAsset}=0$, so a pure transfer omits its asset from that public field. Observer-dependent leakage remains as discussed in @sec-security. All values are range-checked below $2^{128}$, so the field equation is integer conservation. Disabled input slots publish a dummy nullifier $\Pos{DUM}(\delta,\mathit{seed},j)$ that is indistinguishable from a real one. Insertion tips are paid in ETH by the submitter and never drawn from note value, because drawing them from the note would make $\textsf{publicAmount}$ nonzero and reveal $a$.
+
+Liabilities are tracked per asset. Boundary operations check ETH backing for ETH notes, tips and credits, and check the selected token's backing when applicable. Observable short transfers and surcharges revert atomically. Tests show that a paused token's failed payout restores the spend and does not prevent an unrelated ETH exit. These checks cannot establish honest token balance reporting or prevent issuer confiscation, rebasing, depegging or malicious upgrades. An asset-failure isolation claim is conditional on the admitted token behavior, not a guarantee for arbitrary contracts.
+
+**Asset identifiers.** The label $a$ is a field element, and the contract decides which labels exist. The evaluated profile maps labels $0,\ldots,7$ to a list of assets fixed at deployment (native ETH and ERC-20 tokens), each with its own deposit cap. A proposed permissionless profile would use the token address itself as the label and require different asset-range constraints and liability indexing. Exact transfer checks alone would not establish compatibility with arbitrary ERC-20 behavior. A pure transfer still omits its asset from public contract fields; this does not guarantee statistical indistinguishability across assets. The permissionless profile is an unimplemented proposal, outside the evaluated v0.8 allowlist profile.
+
+## Batch verification of independent transfers {#sec-batch}
+
+Groth16 [@groth16] accepts $(A,B,C)$ for public inputs $x\in\mathbb{F}_r^k$ if
+
+$$
+e(-A,B)\,e(\alpha,\beta)\,e(L(x),\gamma)\,e(C,\delta)=1,
+$$
+
+with $L(x)=\mathrm{IC}_0+\sum_j x_j\,\mathrm{IC}_j$. For $n$ proofs of one circuit, the verifier derives $r_0=1$ and $r_i=\mathrm{Keccak}(\sigma,i)\bmod r$ for $i\ge 1$, from a seed $\sigma$ that hashes the chain identifier, the verifier address, all proofs and all inputs [@fiatshamir]. It accepts if
+
+$$
+\begin{aligned}
+\textstyle\prod_i e(-r_iA_i,B_i)\;&e(S\alpha,\beta)\;e(S\,\mathrm{IC}_0+\textstyle\sum_j T_j\mathrm{IC}_j,\gamma)\\
+&\cdot\,e(\textstyle\sum_i r_iC_i,\delta)=1,
+\end{aligned}
+$$
+
+with $S=\sum_i r_i$ and $T_j=\sum_i r_i x_{ij}$. The check uses $n+3$ pairings and $2n+k+2$ scalar multiplications, against $4n$ pairings and $nk$ scalar multiplications for separate checks.
+
+**Soundness.** Let $X_i\in\mathbb{G}_T$ be the left side of proof $i$'s equation. The batch computes $\prod_i X_i^{r_i}$. If some $X_j\ne 1$ with $j\ge 1$, then for any fixed choice of the other coefficients at most one value of $r_j$ makes the product 1, so a uniform $r_j$ gives acceptance probability at most $1/r$. If only $X_0\ne 1$, the product differs from 1 for every choice. Modeling Keccak as a random oracle, an adversary making $q$ oracle queries succeeds with probability at most about $q/r<2^{-190}$ for $q=2^{64}$. The argument needs every $B_i$ in the order-$r$ subgroup of $\mathbb{G}_2$ and every $A_i,C_i$ on the curve, both enforced by the precompiles [@eip197].
+
+**Aggregator lane.** `transactBatch` accepts up to 16 queued pure transfers ($W=0$). It validates each entry statically; any malformation reverts the call. It then marks as *stale* the entries that other transactions have invalidated: an expired deadline, an evicted root, an already-spent nullifier, or a nullifier used by an earlier included entry. Stale entries are skipped and their tips credited to the submitter. The remaining entries are verified with one `verifyBatch` call and applied in order.
+
+Each entry's canonical body is exactly what a single submission would hash, so a user's proof is *lane-agnostic*: whichever submission lands first succeeds, and the other is skipped or reverts. An aggregator is an ordinary broadcaster paid by each user's shielded fee output; it gains no keys and no pool privilege.
+
+## Statement profiles {#sec-profiles}
+
+A proof's public inputs cost about 6,150 gas each for the elliptic-curve work alone under EIP-1108 [@eip1108]. The *hashed profile* replaces a circuit's $k$ inputs with $\Hash(\mathrm{SHA256}(x_1\|\cdots\|x_k))$. It decomposes each word with an alias-checked gadget, so the hashed bytes are the canonical integer below $r$. The profile is an immutable per-circuit deployment flag, and the constructor checks every verifier's arity against it. @sec-eval shows that hashing pays off mainly for single submissions, because batch verification already shares the input work across the batch.
+
+# Implementation {#sec-impl}
+
+The canonical implementation lives in `contracts/`, `circuits/` and `ref/`. The v0.7 documents provide inherited design context; v0.8 code and its generated evidence define the evaluated candidate. Circuits use Circom 2.1.9, circomlib 2.0.5 and O2 optimization. Groth16 proofs use BN254 via snarkjs 0.7.5. Contracts target Solidity 0.8.26, via-IR and Cancun, including an EIP-1153 reentrancy lock [@eip1153].
+
+{{< include _generated/circuits.qmd >}}
+
+**Verifier and pool.** One generic verifier implementation serves each circuit, with a separate deployment for each verifying key. The IC points occupy an immutable data contract; single and batch verification check canonical inputs and proof coordinates before calling the BN254 precompiles. The pool checks each verifier's public-input arity against the immutable statement profile.
+
+{{< include _generated/implementation.qmd >}}
+
+**Setup and production eligibility.** Groth16 requires structured reference parameters and a circuit-specific phase-two setup. Tests use public PSE phase-one parameters and uncontributed phase-two development keys. The downloaded parameter digests are pinned for reproducibility; this work has not independently verified the ceremony transcript. These keys are unsuitable for accepting funds. The production requirement, recorded in the current v0.8 specification, prohibits soundness depending on destruction of secret setup material at any proof layer. Public, reproducible parameter derivation is permitted. A ceremony or trusted-setup wrapper cannot make this baseline eligible for release. A transparent replacement must preserve the payment relations and receive independent review and complete transaction benchmarks.
+
+**Tests.** Witness tests assert both acceptance and rejection, and treat missing artifacts or checker failures as infrastructure errors. Actual relation proofs cover deposits, direct first-note spends, queued transfers, full and partial insertion, public withdrawals, exits and eight-input consolidation in both statement profiles. Contract tests compare liabilities with an independent plaintext note ledger and compare queue records, accumulators and roots with the reference model. Rejection tests cover malformed proofs, altered bodies, stale submissions, token transfer failures, recipient refusal, credit rollback, reentrancy and integer boundaries. These finite tests are evidence of tested behavior, not a proof of security.
+
+# Evaluation {#sec-eval}
+
+{{< include _generated/results.qmd >}}
+
+ERC-20 rows use the local exact-transfer token fixture, not a mainnet token implementation. Different token code adds its own execution cost. Proof timers start inside the worker after module loading; process startup and artifact-integrity preflight are excluded.
+
+The standalone size-16 verifier measurement uses fourteen distinct valid transfer proofs and two repetitions. Duplicate proofs are permitted by the verifier; the pool enforces replay prevention through nullifiers. The pool batch workload accepts fourteen distinct transfers and skips two stale submissions.
+
+{{< include _generated/transparent.qmd >}}
+
+# Security Analysis {#sec-security}
+
+**Balance (G1).** A note enters the tree only through an insertion or direct proof. Its leaf is either a commitment output by a verified spend, whose value is conserved by the relation in @sec-spend, or a deposit commitment computed in-circuit from words bound by the SHA-256 accumulator to the amount and asset the contract collected. Forging a leaf therefore requires a SHA-256 collision at 253 bits (about $2^{126}$ work), a Poseidon collision, or breaking Groth16 knowledge soundness. Insertion proves each target slot empty, which rules out overwriting. Per-asset liabilities and the single-asset constraint prevent value moving between assets. The contract-side backing checks catch accounting divergence, but they are not the primary defense.
+
+**Spend authority (G2).** Membership and ownership are proven from $sk$, and the nullifier depends on $nk=\Pos{NK}(sk)$ and the leaf position, so a note has exactly one nullifier. Tagging the Poseidon domains prevents cross-use of hash outputs.
+
+**Statement binding.** A proof must bind every externally meaningful field; otherwise a copied proof could be replayed with altered calldata. The canonical body, including recipient, deadline, executor, ciphertexts, and in direct mode the reward beneficiary and expected queue state, is hashed to $h_{\mathrm{ext}}$, a public input. $h_{\mathrm{ext}}$ enters a quadratic constraint in the native profile and the statement hash in the hashed profile. Groth16 is weakly simulation-extractable [@bksv21]: a re-randomized proof verifies only for the original statement, and resubmitting it repeats the original nullifiers. Tests confirm that an honest proof fails for a mutated body and for a swapped beneficiary. A formal review of the compiled constraint system remains a release requirement.
+
+**Batch verification.** The soundness bound is given in @sec-batch. Skipping uses only state that other transactions can change, and it happens before verification, so an entry cannot be both skipped and applied.
+
+**Privacy (G3).** A pure transfer publishes two nullifiers, four commitments, ciphertexts and a zero public asset. Commitments for different assets share one tree, but this does not establish a uniform anonymity set over every unspent note. Deposit and withdrawal histories, timing, asset availability and participants' own note knowledge can narrow the candidate set. A broadcaster paid in a shielded output learns that output's asset and value; the single-asset relation therefore reveals the transfer asset to that broadcaster. The following also leak by design:
+
+- deposit and withdrawal amounts and assets, and their timing;
+- the submitting account;
+- co-submission of the transfers in one batch.
+
+In direct mode, spending a deposit in the same call links the input to that deposit with high probability; wallets should default to waiting. Recipient address privacy depends on ristretto255 and the SHA-512 map to $H_d$.
+
+**Cryptographic margins.** BN254 offers roughly 100-bit security after the extended tower number field sieve [@exTNFS; @bd19], a limit shared by every system that uses Ethereum's BN254 precompiles. The Groth16 setup requires a per-circuit phase-2 ceremony, and a compromised ceremony breaks soundness for that circuit.
+
+# Limitations and Future Work {#sec-limits}
+
+**Transparent proof system.** A replacement must cover spends, exits, direct mode, insertion and any aggregation layer without trusted setup. No qualifying replacement has been implemented. The isolated experiment in @sec-transparent-experiment fails its privacy and gas gates and does not provide a complete-payment benchmark. The current Groth16 batching equation and gas figures do not establish the cost of a replacement. Evaluation must include proof calldata, contract-size limits, batch occupancy and low-volume unilateral submission and exit costs. Aggregating transparent user proofs must preserve witness privacy and permissionless submission.
+
+**Cost floor.** Two 22,100-gas nullifier writes and about 1.9 KB of calldata remain per transfer. Lowering them would require an aggregated nullifier structure proven off-chain, which reintroduces sequencing questions that the direct and batched lanes avoid.
+
+**Code size.** The pool has little EIP-170 headroom. Inbox addresses, fixed-size encrypted memos and direct absorption of a pending transfer remain future work. Adding them requires a separately reviewed architecture; an extension split has not been implemented.
+
+**Evaluation scope.** The measurements use actual full-depth relations with development verifying keys in one local EVM. They do not establish production setup integrity, mainnet readiness, browser or phone performance, ring-wrap steady-state gas, long-running adversarial behavior, or reorganization recovery. The permissionless asset profile and network services have not been implemented. No external audit or comparative third-party gas benchmark has been performed.
+
+**Cross-chain entry.** An atomic-swap extension is specified separately, using secret revelation and a cross-group discrete-log proof [@gugger20]. The v0.8 ETH-side kernel has local tests for domain separation, credit accounting, separated claim and delivery, retry, refund and withdrawal. A pool fixture isolates those kernel tests. No Monero daemon, cross-group proof, stagenet swap or end-to-end atomicity claim is included; the extension remains inactive.
+
+# Conclusion
+
+ShieldedETH v0.8 is an executable research baseline for a multi-asset payment pool on Ethereum L1. Proofs move note-tree computation out of the contract; direct insertion supports low-volume use; and batching shares the cost of verifying independent user proofs. Full-depth circuit builds, actual relation proofs, adversarial tests and complete transaction receipts support these implementation claims. Production requires a transparent proof system, independent review, broader adversarial testing and operational validation. The evaluated Groth16 backend does not satisfy the no-trusted-setup requirement.
+
+# References {.unnumbered}
+
+```{=latex}
+\small
+```
+
+::: {#refs}
+:::

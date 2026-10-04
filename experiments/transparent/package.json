@@ -1,0 +1,13 @@
+{
+  "name": "shieldedeth-transparent-experiment",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Isolated fundless transparent-proof feasibility experiment",
+  "dependencies": {
+    "@ethereumjs/vm": "10.1.3",
+    "@ethereumjs/common": "10.1.2",
+    "@ethereumjs/tx": "10.1.2",
+    "@ethereumjs/block": "10.1.2",
+    "@ethereumjs/util": "10.1.1"
+  }
+}

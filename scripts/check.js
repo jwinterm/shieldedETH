@@ -1,0 +1,14 @@
+"use strict";
+const fs = require("node:fs"), path = require("node:path"), assert = require("node:assert/strict"), { spawnSync } = require("node:child_process");
+const { ROOT, BUILD, save, sourceFiles } = require("./artifacts");
+const before = sourceFiles();
+let r = spawnSync(process.execPath, ["scripts/build-contracts.js"], { cwd: ROOT, stdio: "inherit" });
+if (r.error || r.status !== 0) throw r.error || Error("Contract build failed");
+const files = fs.readdirSync(path.join(ROOT, "tests")).filter((f) => f.endsWith(".test.js")).sort().map((f) => "tests/" + f);
+r = spawnSync(process.execPath, ["--test", "--test-reporter=tap", ...files], { cwd: ROOT, encoding: "utf8", maxBuffer: 4 * 1024 * 1024 });
+process.stdout.write(r.stdout || ""); process.stderr.write(r.stderr || "");
+if (r.error || r.status !== 0) throw r.error || Error("Unit tests failed");
+const passed = Number(r.stdout.match(/^# pass (\d+)$/m)?.[1]);
+assert(passed > 0 && /^# fail 0$/m.test(r.stdout), "test report did not attest success");
+assert.deepEqual(sourceFiles(), before, "sources changed while tests ran");
+save(path.join(BUILD, "unit-tests.json"), { sourceHashes: before, files, passed, failed: 0, node: process.version });

@@ -1,0 +1,80 @@
+The reference run used Apple M5 (arm64), 10 logical CPUs, 32 GiB RAM, Node v24.19.0, and snarkjs 0.7.5. All ten full-depth circuit variants generated proofs accepted independently by snarkjs and by the contracts. The maximum insertion relation was exercised with 16, 4, and 14 active entries.
+
+Gas is the complete transaction charge reported by VM.runTx under Cancun rules, including intrinsic calldata cost and applied refunds. Every call is a separately signed transaction with a fresh access list and original-storage accounting. The sequence begins from a newly deployed pool, then exercises deposits, direct spends, queued spends, insertion and exits. It does not wrap the history rings; no steady-state estimate is reported.
+
+```{=latex}
+\begin{table}[t]
+\centering\scriptsize
+\caption{Total transaction gas. Multi-item rows divide one receipt by the stated number of accepted items.}
+\label{tbl-pool}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Operation & Native & Hashed \\
+\midrule
+First token deposit & 213{,}303 & 213{,}279 \\
+20 deposits, per item & 48{,}777 & 48{,}775 \\
+Insert 16 entries & 292{,}551 & 292{,}539 \\
+Queued transfer & 471{,}640 & 386{,}411 \\
+Batch, per included transfer & 239{,}535 & 223{,}191 \\
+Direct token spend & 588{,}841 & 456{,}607 \\
+Token withdrawal + change & 490{,}132 & 404{,}915 \\
+Two-note token exit & 436{,}900 & 383{,}014 \\
+ETH exit & 405{,}053 & 351{,}143 \\
+Eight-input consolidation & 651{,}335 & 519{,}050 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+
+The batch workload submits 14 valid independent transfers plus two stale entries. Its divided gas includes the stale calldata and credit accounting. The single transfer and aggregate occur at different lifecycle states, so their difference includes storage effects. Standalone verifier measurements isolate the same verifier API across batch sizes.
+
+```{=latex}
+\begin{table}[t]
+\centering\scriptsize
+\caption{Standalone verifier transaction gas per proof, using actual transfer relations.}
+\label{tbl-verifier}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Operation & Native $k=12$ & Hashed $k=1$ \\
+\midrule
+Single & 313{,}968 & 223{,}126 \\
+Batch 1 & 349{,}290 & 253{,}342 \\
+Batch 2 & 208{,}007 & 154{,}504 \\
+Batch 4 & 137{,}393 & 105{,}086 \\
+Batch 8 & 102{,}087 & 80{,}394 \\
+Batch 16 & 84{,}458 & 68{,}057 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+
+```{=latex}
+\begin{table}[t]
+\centering\scriptsize
+\caption{Witness calculation plus proving, seconds, and peak process RSS in MiB. Samples are lifecycle proofs, not a latency distribution.}
+\label{tbl-proving}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Circuit & $n$ & Median & Range & RSS \\
+\midrule
+transfer24 & 17 & 1.10 & 0.88--1.18 & 979 \\
+transfer84 & 1 & 3.01 & 3.01--3.01 & 2059 \\
+exit & 5 & 0.83 & 0.82--0.97 & 978 \\
+direct & 2 & 2.34 & 1.72--2.96 & 1410 \\
+batch1 & 8 & 5.47 & 5.05--5.96 & 5129 \\
+transfer24h & 17 & 3.31 & 3.26--3.54 & 3800 \\
+transfer84h & 1 & 6.29 & 6.29--6.29 & 5048 \\
+exith & 5 & 3.05 & 3.01--3.13 & 3481 \\
+directh & 2 & 6.44 & 6.42--6.45 & 4823 \\
+batch16 & 6 & 48.35 & 43.52--90.63 & 16884 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+
+Proving uses a fresh Node process per proof and the default snarkjs worker pool. Times include witness generation and proving-key loading, and exclude setup, circuit compilation, and verification. RSS includes the process and its worker threads. Workloads vary, especially insertion occupancy. These samples establish desktop feasibility; they do not establish phone or browser latency, p95, or a production profile choice.
+
+The recorded evidence contains source and artifact digests, circuit counts, key provenance, proof timings, and successful transaction receipts. Regeneration refuses stale test evidence. No comparative gas result for Tornado Cash, Nova, or RAILGUN is asserted by this run.

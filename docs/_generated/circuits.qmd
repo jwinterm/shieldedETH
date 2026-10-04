@@ -1,0 +1,19 @@
+```{=latex}
+\begin{table}[t]
+\centering\scriptsize
+\caption{Compiled depth-32 R1CS constraints (Circom 2.1.9, O2). Hashed spend circuits each have one public input.}
+\label{tbl-circ}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Circuit & Native $k$ & Native & Hashed \\
+\midrule
+Transfer 2$\to$4 & 12 & 21{,}522 & 238{,}587 \\
+Transfer 8$\to$4 & 18 & 77{,}172 & 388{,}293 \\
+Exit 2$\to$0 & 8 & 18{,}994 & 173{,}355 \\
+Direct 2$\to$4 & 18 & 52{,}265 & 363{,}386 \\
+Insertion, max 1 & 1 & 320{,}128 & -- \\
+Insertion, max 16 & 1 & 2{,}396{,}158 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+```

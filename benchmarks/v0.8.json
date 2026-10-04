@@ -1,0 +1,1952 @@
+{
+  "schema": 1,
+  "protocol": "0.8",
+  "developmentOnly": true,
+  "scope": "Local Cancun EVM, complete signed VM.runTx transactions, depth-32 production relations with development Groth16 keys. No external audit, public deployment, production ceremony, or mobile/browser measurements.",
+  "sourceHashes": {
+    "contracts/SethGroth16Verifier.sol": "555706d517ab687c6726a3991a73e146f640e354e411f21b514ccebd2b8e5bf7",
+    "contracts/ShieldedETHPool.sol": "6d3a8bf8bc5e96ca079c09d6a181d032cc0e49e0b27b2fd8eba8e9cb8398edba",
+    "contracts/XmrSwapKernel.sol": "84049bd0eed73524ffba47157a0486a883a42d029d75d1efa3b540f3fd52da6e",
+    "circuits/batch.circom": "2b2abc2f0244d77466c0bb8d53155642ca3de6a29199a316d0cf74ebd058b132",
+    "circuits/hashed.circom": "b4d8ed52cdbe64f113b027392b10282d4d121a39006f3d29d99b547efc365e12",
+    "circuits/lib.circom": "4e0105e69ef327eb142bf68bf5cc3d7765a3e75a6de39b2ec93af8cc1878c81f",
+    "circuits/main_batch1.circom": "73439e69689c67f239c4c8c6997c5141c728b67e7460828acb8dfd2bc54aca89",
+    "circuits/main_batch16.circom": "2c08483a273628bc5022ce307935eb17ff22b8a2b6c3cca037439f319e95b946",
+    "circuits/main_direct.circom": "ca03edff6882e56c023055d5814c658a8cec95084f47b035cdbc097e68f7980d",
+    "circuits/main_directh.circom": "e1dcd034b8001b27ced8d4f0bbdf258d240cf41f751bd7401b39736bf1c078e1",
+    "circuits/main_exit.circom": "095c842679e977c5e3c6c804009d40ab5b5697c2dfbc88a72f2fbf8ad971ff3b",
+    "circuits/main_exith.circom": "47892dfdd78a29cfface393a78253830ff3dde6173d12d99ae92cb974e889ec0",
+    "circuits/main_transfer24.circom": "d270e7cb14583b205b7a255816f781638f6ab4db7dc3826e53fc19583f0dcdf4",
+    "circuits/main_transfer24h.circom": "6099cce55e2521cc185d70788dc9aae9d2b3a4faacbca51cf70331ee583361c0",
+    "circuits/main_transfer84.circom": "d8663765390414637a308ee335f0dc45a2b6fb580c2a1d313c94237b2db3b8dc",
+    "circuits/main_transfer84h.circom": "3fdd77ac52479cb1f41881ad314621af24242343d1f4fd1da64a80482b00a475",
+    "circuits/transfer.circom": "a466d62a729b5ea0c0c5a4315885c72b530fc3b2b78a5c6d7c5aa72d06153ed9",
+    "ref/circuit_expectations.js": "003be7e39ebd20b666dae78f97a61d80fcdb41c53b2f7cae81b29ca4fb6901fa",
+    "ref/seth8.js": "e36117c410b902df1d55e6657c0c22991c55fc5724965b2e94e3d5c676a74cac",
+    "ref/transactions.js": "8d380404ba7de17708ff2c1f03a7f26b7eadbefa092b68ca0c13eec242801f59",
+    "scripts/artifacts.js": "cfacb228894199a2864d4531f29fea0647357c2a77b075488ce35bb0b41b09b3",
+    "scripts/bootstrap-circom.sh": "9815e1dc716239c4957a6e68e85911d96a56df155fb78b33e48e2ec2d8692484",
+    "scripts/build-circuits.js": "b97026c8eb38a85a2592dec175c17e2ff4cf07c5eac64b261cff53decf32c7dc",
+    "scripts/build-contracts.js": "81dbb0f265ee7fb021064a26f4012354362e09fdb9031841583b963626d86381",
+    "scripts/check.js": "68585b66bcd23ca6c0db3461c343ad5ff512e9986f2d17df80db38721a9d7b3b",
+    "scripts/download-ptau.js": "bd6f26e7baf2d5082e6dc42015e0946ea244dbbd255bcb057079d3307acc595b",
+    "scripts/render-paper.sh": "d5f2ba77edaec82b1fa5d01bc711513db3548f9788e2d13845d8d555cce1b3e7",
+    "scripts/setup-dev.js": "c4c7a76f8157f6939acba056e417a344eaf2a4077eeff334b15592f6908222e8",
+    "scripts/update-evidence.js": "73f7a747c57d5ed1cc4bd6d141109908336da4ab27e44cbf63166fcedc7ef9af",
+    "tests/circuits.js": "43d2823c82ad39ac6cb0c0a0b58cdb87db2606ca757f1fbe396c0f7c4f9b83a1",
+    "tests/contracts/TestAssets.sol": "9d5162322c6d2e20cb078d6138f4e0c59e83024ff128ccc041a73d1ddb4ad8f3",
+    "tests/evm.test.js": "bcb2395a0c49945c5c192deafd609ee25d0a5f80ae13417574dcf1c14ea0913c",
+    "tests/helpers/accounting-edges.js": "4ade1464462acaadf98ab13e90c15f0314d090b973c46e28a20a5f05bda3c38f",
+    "tests/helpers/evm.js": "f7747b6ee9c523aa0289eaec974eb37b4f3d48d9a5bdaf104f7c8c7a259d0378",
+    "tests/helpers/pool.js": "748da62833ad40ff06dc71ba4c2ca2ea7c6494119ad8361e208e66ebe83ee795",
+    "tests/helpers/proof-worker.js": "fe31f164ecb09df53788883f210cfdffe5e2934b994d5f33d0c956a7dd3697c2",
+    "tests/helpers/proofs.js": "359256ace2537d40cfa0cdf7f50e3c1f29fee34224737e30f1b98580be3f7b97",
+    "tests/helpers/verifier-checks.js": "cd17f88c3f476abb44b5ce63c96823811fd140f95d8a36be9b08913946f2b515",
+    "tests/integration.js": "2ce2baa15e35f179f02e119951768bd997479c8dd99bb5e89f2fb9830f418d4e",
+    "tests/kernel.test.js": "c0bd14ff097e6d88cbce9fcf88f1350d54d51ac957b148d19d445053303da0aa",
+    "tests/reference.test.js": "230800f952c4e215c017abc4ec74174a1ac23c1f1210c6f43d67e14172147b44",
+    "package.json": "7b8c07c70eda4a4fc9af97f80bd4d0b62e27914adeea4bf2ec08f49082312261",
+    "package-lock.json": "aa011bdd538fba7974cec52b9f5277bd03210971c9a316ff45d887f3f64f8964"
+  },
+  "compiler": "0.8.26+commit.8a97fa7a.Emscripten.clang",
+  "settings": {
+    "viaIR": true,
+    "optimizer": {
+      "enabled": true,
+      "runs": 10
+    },
+    "evmVersion": "cancun",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object",
+          "storageLayout"
+        ]
+      }
+    }
+  },
+  "contracts": {
+    "ShieldedETHPool": {
+      "source": "contracts/ShieldedETHPool.sol",
+      "runtimeBytes": 24399,
+      "runtimeTemplateSha256": "70be7d31542a77e602bfd53637dfa753bf05022b66255067a4ff4e051f6fce15"
+    },
+    "SethGroth16Verifier": {
+      "source": "contracts/SethGroth16Verifier.sol",
+      "runtimeBytes": 5139,
+      "runtimeTemplateSha256": "6e1655a31df9f94ce9a07762fc71f6ecc62f82edd2a82e1de1278c4f53f57057"
+    },
+    "XmrSwapKernel": {
+      "source": "contracts/XmrSwapKernel.sol",
+      "runtimeBytes": 8140,
+      "runtimeTemplateSha256": "2c14ad4250554a89c06a6aab4881dd8f1647136c3942a434a76597628fd8be4e"
+    }
+  },
+  "circuits": {
+    "transfer24": {
+      "inputHash": "ae65b41a3429a4acdce78426747777755754a75bcb0c4086ea25e145ce151da5",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 21592,
+      "publicOutputs": 0,
+      "publicInputs": 12,
+      "privateInputs": 152,
+      "constraints": 21522,
+      "compileSeconds": 1.3743725,
+      "r1csSha256": "cace791a00f02031caf69198c411c270e0dd95895e4acd683389ec404a4bd4fb",
+      "wasmSha256": "17a9a186ef9dc3c80e497cfba12389008b63180f2ada1144dc7c7841066cda99"
+    },
+    "transfer84": {
+      "inputHash": "3275e9e6a2c76c18384a1872c1d6d16ddfc087172792c18120d5cc30d3e9ffe8",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 77404,
+      "publicOutputs": 0,
+      "publicInputs": 18,
+      "privateInputs": 566,
+      "constraints": 77172,
+      "compileSeconds": 3.24358775,
+      "r1csSha256": "9542e32e4a897524ceaf8a92b5ffe79a195c5de658cf7a6f8c095e529db4156e",
+      "wasmSha256": "33f90804fd81d18a4a54134f586ae69e22574e54ca1a558b0ff7365e9bdd5bab"
+    },
+    "exit": {
+      "inputHash": "1d3d91f932ad7a25b6adaa98118f39782610946b6f6b2f7b8b51a5c0a8f6d5f2",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 19056,
+      "publicOutputs": 0,
+      "publicInputs": 8,
+      "privateInputs": 140,
+      "constraints": 18994,
+      "compileSeconds": 1.2587412080000004,
+      "r1csSha256": "3f4883a33c301b7d0865b941cf5efe5b88f4ef7978a2235a546af04cb463f28b",
+      "wasmSha256": "2266461c1f78524662f84852914b7f8221308193c8529df286ec12dfc19ba28d"
+    },
+    "direct": {
+      "inputHash": "3b93fe3c4e92030f9cd4158496617b6030fc62e0444a012c0af45e506e1a5975",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 52266,
+      "publicOutputs": 0,
+      "publicInputs": 18,
+      "privateInputs": 212,
+      "constraints": 52265,
+      "compileSeconds": 2.3749248749999987,
+      "r1csSha256": "dc211603b4aee1a285f7fc69fb0ca9e8e0105f5384ff6de63625a6e04a99377c",
+      "wasmSha256": "0150c9eb219be3c3518d05444b7ca82f5d650762c7cf7fd9ce97a420ea99c522"
+    },
+    "batch1": {
+      "inputHash": "55885961249134c640d72603d1831a90b8ebe0c641cf2bf97260bccccadbb7f0",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 316920,
+      "publicOutputs": 0,
+      "publicInputs": 1,
+      "privateInputs": 558,
+      "constraints": 320128,
+      "compileSeconds": 8.066946208000001,
+      "r1csSha256": "ced8bd215a345f69f737c7a65fb4eab9c221e7c34dbef56a65b65aa6a9c6e938",
+      "wasmSha256": "ae71e6f471ea8105be8a9f40b7b5d71d3f2690cccdff60565f459b65e2c3e983"
+    },
+    "transfer24h": {
+      "inputHash": "9d186f36779cf2cac36abbee325e1ddae996eda3570fb45db58be982ec87a6f8",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 236449,
+      "publicOutputs": 0,
+      "publicInputs": 1,
+      "privateInputs": 164,
+      "constraints": 238587,
+      "compileSeconds": 6.507038250000002,
+      "r1csSha256": "3ce2c56623279216898dc181146ddd498eeadf069c0edec996af4813de36f79b",
+      "wasmSha256": "5ac244f558b80754047434e3bfc34a26ecc7e44645097cb861a9ba680b0bf500"
+    },
+    "transfer84h": {
+      "inputHash": "641c23323850cb14836f8f5ab20a57e3d06c4863e382c34685f4e730f5d13518",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 385369,
+      "publicOutputs": 0,
+      "publicInputs": 1,
+      "privateInputs": 584,
+      "constraints": 388293,
+      "compileSeconds": 10.543286500000002,
+      "r1csSha256": "0e7714c85f7ba284f073e5bff4e94ef6f123ccfb8f2c0d016fbd6a435761d168",
+      "wasmSha256": "83cddd097345b84c991a3178067f77d979961b8e287cb3d135516eb4b72783e7"
+    },
+    "exith": {
+      "inputHash": "158823ff4376a77a339365ffbd56ff5370c4ce080a490d360a95a667a703e2a0",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 171841,
+      "publicOutputs": 0,
+      "publicInputs": 1,
+      "privateInputs": 148,
+      "constraints": 173355,
+      "compileSeconds": 4.9508599579999935,
+      "r1csSha256": "3f6ed3f4518abf1da10b4134cd1d4538dd3b21318dae821f9e8954e329081945",
+      "wasmSha256": "1a13999082ea21f1d8e11f94b71c8399e60e45d5d470fbea18027f0aa2d93a86"
+    },
+    "directh": {
+      "inputHash": "16b7e6091ead6af86c5a326c05ced34f5aa470f528ac47f7c936acf4e45dffd3",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 360231,
+      "publicOutputs": 0,
+      "publicInputs": 1,
+      "privateInputs": 230,
+      "constraints": 363386,
+      "compileSeconds": 10.163810375,
+      "r1csSha256": "6183c6d78f3093683c7396deb43093cb038685681a47c17c654fad2b89d150fb",
+      "wasmSha256": "f96f91cc1af129878d28c50103f477b6e1b1b044f6e7ff1a7658c114ccbe628f"
+    },
+    "batch16": {
+      "inputHash": "1b2fbf7519af8a98b6f91ff3def214536d65eab6729d5d814d0e2823457e1a6e",
+      "compiler": "circom compiler 2.1.9",
+      "optimization": "O2",
+      "wires": 2373015,
+      "publicOutputs": 0,
+      "publicInputs": 1,
+      "privateInputs": 1113,
+      "constraints": 2396158,
+      "compileSeconds": 73.23443325,
+      "r1csSha256": "6d7d683e8524d2315c4e46048a902651b32950862e719e408bfb161ce239a80a",
+      "wasmSha256": "47de043314aaaa48491a929150073851869f358662a7dd6ebdd6b5ee7852507e"
+    }
+  },
+  "keys": {
+    "transfer24": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "cace791a00f02031caf69198c411c270e0dd95895e4acd683389ec404a4bd4fb",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "bb8d186087eebcb7176c0efc5a122a3ed823750766d7caf49ec75064589fbe6e",
+      "setupSeconds": 23.052204208
+    },
+    "transfer84": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "9542e32e4a897524ceaf8a92b5ffe79a195c5de658cf7a6f8c095e529db4156e",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "b289afe7a6e42d8298a952a439d4e59033944b6144c099105aa498417738839a",
+      "setupSeconds": 45.908286416
+    },
+    "exit": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "3f4883a33c301b7d0865b941cf5efe5b88f4ef7978a2235a546af04cb463f28b",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "d0dbddc71a6bceb2bd7ec4e21101107014af4d83205b46c5aa1fe9208c64c2f2",
+      "setupSeconds": 25.182495333
+    },
+    "direct": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "dc211603b4aee1a285f7fc69fb0ca9e8e0105f5384ff6de63625a6e04a99377c",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "c280cb9767a51d9c53127c70438b1c1b78644019c674b8053508c6213b2ee78f",
+      "setupSeconds": 37.462261834
+    },
+    "batch1": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "ced8bd215a345f69f737c7a65fb4eab9c221e7c34dbef56a65b65aa6a9c6e938",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "0e49b5e94b195000f2548c7b10adbbd49617cdc344a6a5443c404bf7ce41fa33",
+      "setupSeconds": 86.99650083300003
+    },
+    "transfer24h": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "3ce2c56623279216898dc181146ddd498eeadf069c0edec996af4813de36f79b",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "1d0a2f815c721ff38fd9ea4b9c99f42b3aaebc7421a74543b7266a0e0b408305",
+      "setupSeconds": 70.15999212499999
+    },
+    "transfer84h": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "0e7714c85f7ba284f073e5bff4e94ef6f123ccfb8f2c0d016fbd6a435761d168",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "865a2d6c25eb5198e12e835ba5cb26e69a34fd81af63e9767ba2da05cb7eb15c",
+      "setupSeconds": 103.241414292
+    },
+    "exith": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "3f6ed3f4518abf1da10b4134cd1d4538dd3b21318dae821f9e8954e329081945",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "8ff3ca84dea73092e544fceb7d4339a749c01e02f9afb9975762d43248a20469",
+      "setupSeconds": 45.70395658300002
+    },
+    "directh": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "6183c6d78f3093683c7396deb43093cb038685681a47c17c654fad2b89d150fb",
+      "ptauSha256": "d0cadfb7d5bad6c5e0b012fb1c4bbaa3cc98fe249988f9f99d1818175e4c2015",
+      "zkeySha256": "cef7333c24af6e52ea117ed7c086e1fae6d1c5507ab059d6581884b367df4cc0",
+      "setupSeconds": 90.60191583399998
+    },
+    "batch16": {
+      "developmentOnly": true,
+      "ceremony": "uncontributed phase-2 initialization; never production",
+      "r1csSha256": "6d7d683e8524d2315c4e46048a902651b32950862e719e408bfb161ce239a80a",
+      "ptauSha256": "9f50df02e370796098cecbb025d46a44c7165cac8bc5ebedd76d97f1129d9653",
+      "zkeySha256": "f5fea815391692cfe4cf460d3b2b21a1f09c0519cde568bdba797497dd3c144e",
+      "setupSeconds": 715.294017125
+    }
+  },
+  "unit": {
+    "files": [
+      "tests/evm.test.js",
+      "tests/kernel.test.js",
+      "tests/reference.test.js"
+    ],
+    "passed": 8,
+    "failed": 0
+  },
+  "circuitTests": [
+    {
+      "circuit": "transfer24",
+      "label": "valid native transfer",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "circuit": "direct",
+      "label": "first pending token deposit is spendable under intermediate root",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "inflation",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "cross-asset relabel",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "unregistered asset",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "foreign ownership",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "forged nullifier",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "wrong leaf position",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "nonboolean enable",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "disabled value",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "value overflow",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "empty spend",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "forged root",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24",
+      "label": "output asset conservation",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "direct",
+      "label": "cannot overwrite absorbed slot",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24h",
+      "label": "valid hashed relation",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "circuit": "transfer24h",
+      "label": "changed statement",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "directh",
+      "label": "valid hashed relation",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "circuit": "directh",
+      "label": "changed statement",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "batch1",
+      "label": "authenticated deposit insertion",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "circuit": "batch1",
+      "label": "changed funded amount",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "batch16",
+      "label": "authenticated deposit insertion",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "circuit": "batch16",
+      "label": "changed funded amount",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "circuit": "batch16",
+      "label": "inactive slot must be canonical",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "label": "missing artifacts and inverted positive and negative expectations fail",
+      "passed": true
+    }
+  ],
+  "profiles": [
+    {
+      "schema": 1,
+      "developmentOnly": true,
+      "chain": "local EVM",
+      "hardfork": "cancun",
+      "transactionRunner": "VM.runTx",
+      "hardware": {
+        "arch": "arm64",
+        "cpu": "Apple M5",
+        "logicalCpus": 10,
+        "memoryBytes": 34359738368,
+        "node": "v24.19.0"
+      },
+      "result": {
+        "profile": "native",
+        "checks": [
+          "first token deposit spent under intermediate root; reward recipient bound",
+          "onward payment, envelope binding, double-spend refusal, authenticated insertion",
+          "token pause, false, no-op, tax, surcharge and malformed return roll back spend",
+          "two-note complete exit advances idle queue without rotating note root",
+          "ETH first-deposit spending; recipient refusal restores spend; unrelated token pause does not block exit",
+          "multi-deposit exact records and one token pull; real full and partial 16-entry insertion",
+          "standalone verifier batches 1/2/4/8/16; altered statements, swapped inputs, foreign points and noncanonical encodings rejected",
+          "skipped-tip sum above uint128 retains exact credit; full-tree guards precede proof verification",
+          "real Groth16 aggregation, stale skips and refunds, atomic invalid-proof rollback, subsequent insertion",
+          "eight-input conservation followed by insertion and complete withdrawal",
+          "zero-entry skip, top-ups, credit rollback and reentrancy protection",
+          "token admission exact debit/credit and no-return compatibility"
+        ],
+        "proving": [
+          {
+            "circuit": "direct",
+            "witnessSeconds": 0.19384204200000002,
+            "provingSeconds": 2.763082459,
+            "maxRssKiB": 1330784,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.069130542,
+            "provingSeconds": 0.9615315000000001,
+            "maxRssKiB": 978688,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.40376858299999996,
+            "provingSeconds": 4.912542290999999,
+            "maxRssKiB": 5014544,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.052319125,
+            "provingSeconds": 0.82963725,
+            "maxRssKiB": 940160,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.40330099999999997,
+            "provingSeconds": 4.645931708,
+            "maxRssKiB": 5053072,
+            "workers": 10
+          },
+          {
+            "circuit": "exit",
+            "witnessSeconds": 0.04855808300000001,
+            "provingSeconds": 0.775998875,
+            "maxRssKiB": 974832,
+            "workers": 10
+          },
+          {
+            "circuit": "direct",
+            "witnessSeconds": 0.07409241599999998,
+            "provingSeconds": 1.6481879160000001,
+            "maxRssKiB": 1443552,
+            "workers": 10
+          },
+          {
+            "circuit": "exit",
+            "witnessSeconds": 0.049013875,
+            "provingSeconds": 0.782109667,
+            "maxRssKiB": 1001728,
+            "workers": 10
+          },
+          {
+            "circuit": "exit",
+            "witnessSeconds": 0.04732970800000001,
+            "provingSeconds": 0.787275667,
+            "maxRssKiB": 967632,
+            "workers": 10
+          },
+          {
+            "circuit": "batch16",
+            "witnessSeconds": 2.677328625,
+            "provingSeconds": 53.153725375,
+            "maxRssKiB": 8940480,
+            "workers": 10
+          },
+          {
+            "circuit": "batch16",
+            "witnessSeconds": 3.242920708,
+            "provingSeconds": 87.38883575,
+            "maxRssKiB": 11198320,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.0750705,
+            "provingSeconds": 1.0671733749999999,
+            "maxRssKiB": 960768,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.055339957999999995,
+            "provingSeconds": 1.041300041,
+            "maxRssKiB": 990352,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.055008416,
+            "provingSeconds": 1.070501291,
+            "maxRssKiB": 952320,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.061073459000000004,
+            "provingSeconds": 1.059789583,
+            "maxRssKiB": 1002352,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.058970708000000004,
+            "provingSeconds": 1.0206422919999998,
+            "maxRssKiB": 947072,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.055137208,
+            "provingSeconds": 0.993479584,
+            "maxRssKiB": 956384,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.057060334,
+            "provingSeconds": 1.0485874579999999,
+            "maxRssKiB": 953600,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.058609167,
+            "provingSeconds": 1.0147695829999999,
+            "maxRssKiB": 986752,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.072121667,
+            "provingSeconds": 1.058777583,
+            "maxRssKiB": 965760,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.05436825,
+            "provingSeconds": 1.051956833,
+            "maxRssKiB": 966656,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.059452458,
+            "provingSeconds": 1.075716583,
+            "maxRssKiB": 966880,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.06392925,
+            "provingSeconds": 1.032452791,
+            "maxRssKiB": 976144,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.058213083000000006,
+            "provingSeconds": 0.986635542,
+            "maxRssKiB": 931072,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.060733083,
+            "provingSeconds": 1.120961125,
+            "maxRssKiB": 968736,
+            "workers": 10
+          },
+          {
+            "circuit": "batch16",
+            "witnessSeconds": 2.9023728330000003,
+            "provingSeconds": 47.836076208,
+            "maxRssKiB": 16953952,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer84",
+            "witnessSeconds": 0.12718225,
+            "provingSeconds": 2.8826504999999996,
+            "maxRssKiB": 2108064,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.412964583,
+            "provingSeconds": 5.545020249999999,
+            "maxRssKiB": 5120240,
+            "workers": 10
+          },
+          {
+            "circuit": "exit",
+            "witnessSeconds": 0.056379500000000006,
+            "provingSeconds": 0.8890821250000001,
+            "maxRssKiB": 1001520,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24",
+            "witnessSeconds": 0.059256917,
+            "provingSeconds": 0.9129595,
+            "maxRssKiB": 986176,
+            "workers": 10
+          },
+          {
+            "circuit": "exit",
+            "witnessSeconds": 0.05025295799999999,
+            "provingSeconds": 0.917009792,
+            "maxRssKiB": 998528,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.399120208,
+            "provingSeconds": 5.2860116249999995,
+            "maxRssKiB": 5007808,
+            "workers": 10
+          }
+        ],
+        "transactions": [
+          {
+            "label": "deploy verifier transfer24",
+            "blockNumber": "1",
+            "success": true,
+            "transactionHash": "0xdce2f9d968a7bb5b9ba59d5675e5b9d45a2948410712af2d07856affa2d1b5f6",
+            "totalGas": 1399950,
+            "executionGas": 1236812,
+            "intrinsicGas": 163138,
+            "gasRefund": 0,
+            "calldataBytes": 7828,
+            "calldataSha256": "e8f622382e3614f2c40dcd99ddc947792c7521cd4c00487bcc91e86c141f00be",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier transfer84",
+            "blockNumber": "2",
+            "success": true,
+            "transactionHash": "0xd7d3f7c68768ccec7a241532ae444c58428c85b011af1d3901ff23041a832692",
+            "totalGas": 1485071,
+            "executionGas": 1315729,
+            "intrinsicGas": 169342,
+            "gasRefund": 0,
+            "calldataBytes": 8212,
+            "calldataSha256": "487a23fade00bb16dd88fa58e7aa15ff42f69c8ac2f839939e757f187ec90007",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier exit",
+            "blockNumber": "3",
+            "success": true,
+            "transactionHash": "0xcc39e47fc71c86fb053c8bed5f4cef16074c7c01582e1517b9e93436d6b89104",
+            "totalGas": 1343255,
+            "executionGas": 1184205,
+            "intrinsicGas": 159050,
+            "gasRefund": 0,
+            "calldataBytes": 7572,
+            "calldataSha256": "9e63ed82e725cfdb02855c09cb4e46ec00ca6f87f583b1d5d0af43e8d63b1d76",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier batch1",
+            "blockNumber": "4",
+            "success": true,
+            "transactionHash": "0x8e661881c03993e5d2f369f154790bfa95361715040099581cf3dcb864384215",
+            "totalGas": 1244056,
+            "executionGas": 1092154,
+            "intrinsicGas": 151902,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "8fb1194b499e41ea81d581bb52a7916997ed419b4ba4ba96877c940913c173f8",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier batch16",
+            "blockNumber": "5",
+            "success": true,
+            "transactionHash": "0x00724180e5fcb8de158090ca3a0d31d1140e477c090b6a674bcb689673f82467",
+            "totalGas": 1244056,
+            "executionGas": 1092154,
+            "intrinsicGas": 151902,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "3d60fe8b5cca5e22122fc6c82fe5db0c0ad7018167e9f2a598e6b40f1e23b43d",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier direct",
+            "blockNumber": "6",
+            "success": true,
+            "transactionHash": "0xcc33bbfbc6d85b2312e28ee82ef7a5f8439618bd8a5abf4fdcce84d5e7e1339e",
+            "totalGas": 1485059,
+            "executionGas": 1315729,
+            "intrinsicGas": 169330,
+            "gasRefund": 0,
+            "calldataBytes": 8212,
+            "calldataSha256": "9209082d1837f921dd02efa498b49e8c3e2c248920645b4b3a542af23bce8f53",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy pool",
+            "blockNumber": "9",
+            "success": true,
+            "transactionHash": "0x87affadecf7c10886643e80f22422a852df1c869d87605a55eb53751ff28dc76",
+            "totalGas": 5655730,
+            "executionGas": 5170282,
+            "intrinsicGas": 485448,
+            "gasRefund": 0,
+            "calldataBytes": 28724,
+            "calldataSha256": "247b47411515b24031c7de7785864fc44b2efb4e92180f4b38aa05e2ba2f2452",
+            "receiptStatus": 1
+          },
+          {
+            "label": "first token deposit",
+            "blockNumber": "14",
+            "success": true,
+            "transactionHash": "0xbf8602a40edf8676c568476f96d48ed50a25532a80afea51c4bcfbfc07928aa2",
+            "totalGas": 213303,
+            "executionGas": 189335,
+            "intrinsicGas": 23968,
+            "gasRefund": 0,
+            "calldataBytes": 292,
+            "calldataSha256": "f040986638737fb080301c8170b04bbbde79783a9c511df13818069991898506",
+            "receiptStatus": 1
+          },
+          {
+            "label": "direct first deposit",
+            "blockNumber": "17",
+            "success": true,
+            "transactionHash": "0xd234c0e545092fbd5cf53ac6963bd705bb0f2215f9f803e7ca5a3082a0fdf0b8",
+            "totalGas": 588841,
+            "executionGas": 548981,
+            "intrinsicGas": 49460,
+            "gasRefund": 9600,
+            "calldataBytes": 2372,
+            "calldataSha256": "033728cb56c9acd1e62a1fab63d8736ff43565299fcf247f19528abed0cfc116",
+            "receiptStatus": 1
+          },
+          {
+            "label": "single queued transfer",
+            "blockNumber": "20",
+            "success": true,
+            "transactionHash": "0x4e70d83014bf3508649a49a52948e05bb5434c46ca0447d32c6fd01db74bf948",
+            "totalGas": 471640,
+            "executionGas": 426716,
+            "intrinsicGas": 44924,
+            "gasRefund": 0,
+            "calldataBytes": 1892,
+            "calldataSha256": "f811fbdb85f307df6950ba64db1925d63f959c7ca60f9df491949186b4011920",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "23",
+            "success": true,
+            "transactionHash": "0x6f6d6828efbbea5c64966343a160618eaf3eb8e70ab53f84ec89af38bf665257",
+            "totalGas": 287691,
+            "executionGas": 264867,
+            "intrinsicGas": 27624,
+            "gasRefund": 4800,
+            "calldataBytes": 516,
+            "calldataSha256": "60887d42382ddce56f575ae5b2798357606054f0fc901ed7d91aa9ad4beb7c37",
+            "receiptStatus": 1
+          },
+          {
+            "label": "token withdrawal with change",
+            "blockNumber": "39",
+            "success": true,
+            "transactionHash": "0x66c31b15513985fb99ec79ac22919d15624f85907b63fea5aaf07e6feca075ae",
+            "totalGas": 490132,
+            "executionGas": 444944,
+            "intrinsicGas": 45188,
+            "gasRefund": 0,
+            "calldataBytes": 1892,
+            "calldataSha256": "03b19f9a57161b8e7fbf41961d124869ceaf9511359c4bda3de8131bef9c88b2",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "40",
+            "success": true,
+            "transactionHash": "0xdc948638062feeaf17bc167ad6455690a8bad82c38400049d33f3f25a03bbb69",
+            "totalGas": 281008,
+            "executionGas": 253408,
+            "intrinsicGas": 27600,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "0ee5bbe661326589aabf50c11b0b393e773b6e65a77b44d959e135608a2b2a63",
+            "receiptStatus": 1
+          },
+          {
+            "label": "two-note token exit",
+            "blockNumber": "41",
+            "success": true,
+            "transactionHash": "0x37417da523ff5fc424a848dc410f1b2310ef00fce13e6004da80f65866b8961b",
+            "totalGas": 436900,
+            "executionGas": 408392,
+            "intrinsicGas": 28508,
+            "gasRefund": 0,
+            "calldataBytes": 644,
+            "calldataSha256": "dc6797419810020cca5832cf2d16726a3b9b7bec13944ac429451ce706c43009",
+            "receiptStatus": 1
+          },
+          {
+            "label": "ETH deposit",
+            "blockNumber": "42",
+            "success": true,
+            "transactionHash": "0x3df7b02a54132d83302036e5650014713ccb62fd29ab8cfb68811b69be2d4757",
+            "totalGas": 99727,
+            "executionGas": 75771,
+            "intrinsicGas": 23956,
+            "gasRefund": 0,
+            "calldataBytes": 292,
+            "calldataSha256": "94160e36ca8b39d7861129d1dd8f24dad92aa7fc54a1f23bda4c642ab60e9de0",
+            "receiptStatus": 1
+          },
+          {
+            "label": "direct first deposit",
+            "blockNumber": "43",
+            "success": true,
+            "transactionHash": "0x5054f4ad921b73e0e81d2b77b51141934acdaeefe8a5a6a0613fbe50d291b5cc",
+            "totalGas": 546845,
+            "executionGas": 497433,
+            "intrinsicGas": 49412,
+            "gasRefund": 0,
+            "calldataBytes": 2372,
+            "calldataSha256": "542b05661f8a5a1ba408ddf1c4fbb50d5ee9871b62a4480f44dacaadf9bab778",
+            "receiptStatus": 1
+          },
+          {
+            "label": "ETH exit",
+            "blockNumber": "47",
+            "success": true,
+            "transactionHash": "0xb642760aa65e3402b93ca3fef50016390b3098cb31b7d88cb10c19d1e18a6344",
+            "totalGas": 405053,
+            "executionGas": 381309,
+            "intrinsicGas": 28544,
+            "gasRefund": 4800,
+            "calldataBytes": 644,
+            "calldataSha256": "d6ece0638b5403ec68ecceece7629c443b0a6c2ff5a4d8e2966cd4b508894dea",
+            "receiptStatus": 1
+          },
+          {
+            "label": "depositMany 20",
+            "blockNumber": "49",
+            "success": true,
+            "transactionHash": "0xebda61479b3014b8e85e218efec1870e141cf0afdc1a0b28001508832bb11a93",
+            "totalGas": 975538,
+            "executionGas": 890682,
+            "intrinsicGas": 84856,
+            "gasRefund": 0,
+            "calldataBytes": 7108,
+            "calldataSha256": "532ea90ff925328555fc1aa4a0e265492d461b54ec46108e2c2f829db2c08df0",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 16 via batch16",
+            "blockNumber": "51",
+            "success": true,
+            "transactionHash": "0x514fb6167490b11db662929da175528e36e365a535c8fe98a0e554f2301c0902",
+            "totalGas": 292551,
+            "executionGas": 264963,
+            "intrinsicGas": 27588,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "f3e7e8672a3d7956625b902b0e632fc5591a09315dc349a9f9d31e439981342a",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 4 via batch16",
+            "blockNumber": "52",
+            "success": true,
+            "transactionHash": "0x65c4356c78dd01aac67aaa6961ddd6efbc160907c5ef2c0bcb0ad1fe83305278",
+            "totalGas": 287787,
+            "executionGas": 264963,
+            "intrinsicGas": 27624,
+            "gasRefund": 4800,
+            "calldataBytes": 516,
+            "calldataSha256": "aa0c621d5c7268322b15d0add53bdb08338355b85e06a005fa9d0d28625417f7",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier single",
+            "blockNumber": "53",
+            "success": true,
+            "transactionHash": "0xfeff3b5b401f9608a781e68fde7596ac9384e22f33bc2f3d59bcd67f16190ff4",
+            "totalGas": 313968,
+            "executionGas": 283536,
+            "intrinsicGas": 30432,
+            "gasRefund": 0,
+            "calldataBytes": 708,
+            "calldataSha256": "99affe48ec33a35ccd5af5d5d1ffdcdf0b322c7fa78b53667060c5f3af38f7c7",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 1",
+            "blockNumber": "54",
+            "success": true,
+            "transactionHash": "0x89c78c4ecd121994219108976810c0ed5a5c721fa06acccf42c99e309b32a38b",
+            "totalGas": 349290,
+            "executionGas": 318578,
+            "intrinsicGas": 30712,
+            "gasRefund": 0,
+            "calldataBytes": 772,
+            "calldataSha256": "7a5ab0bb93f14aa21e77d7cac502d718f7ee20369b713ab97e02b6ba0e86b6a5",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 2",
+            "blockNumber": "55",
+            "success": true,
+            "transactionHash": "0x121e955d5153eeb5022eee9dacf92a50c7068aba59ec34183e53716619a46e6b",
+            "totalGas": 416014,
+            "executionGas": 376250,
+            "intrinsicGas": 39764,
+            "gasRefund": 0,
+            "calldataBytes": 1412,
+            "calldataSha256": "51ce0db12431e3c2e85848957ef5e02dc46a6ddd80e48cc174286cddcf076f69",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 4",
+            "blockNumber": "56",
+            "success": true,
+            "transactionHash": "0x63148503062d8df87e1622de4820969b94cd3236e29090cc33ce6d1812bd7212",
+            "totalGas": 549572,
+            "executionGas": 491620,
+            "intrinsicGas": 57952,
+            "gasRefund": 0,
+            "calldataBytes": 2692,
+            "calldataSha256": "f117abc993adec8965ccde74211a0f1e503fe5c639271bce484947944b9ed567",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 8",
+            "blockNumber": "57",
+            "success": true,
+            "transactionHash": "0x8797b260cd4ee50a9103f906ca87a91535a425849c982244d5f1ac7ef34f9a03",
+            "totalGas": 816698,
+            "executionGas": 722454,
+            "intrinsicGas": 94244,
+            "gasRefund": 0,
+            "calldataBytes": 5252,
+            "calldataSha256": "21e2aedbbfeda5bd1f04d9f87ee980eddc18288a82f2ea4ebed59dbbf0f840c3",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 16",
+            "blockNumber": "58",
+            "success": true,
+            "transactionHash": "0xbdf6600b11ce499e27f6fa86efdc985e7768055efa241a43f3cebcdaf78a5a04",
+            "totalGas": 1351330,
+            "executionGas": 1184502,
+            "intrinsicGas": 166828,
+            "gasRefund": 0,
+            "calldataBytes": 10372,
+            "calldataSha256": "b2b3bea39e4387fb220233250644ba75d958d120c03c72c10ff5a73fc47598b4",
+            "receiptStatus": 1
+          },
+          {
+            "label": "aggregate 14 included 2 stale",
+            "blockNumber": "70",
+            "success": true,
+            "transactionHash": "0xb867dcce0ffed3a1f0cb09d472caa7459a4260babfa1b86e87590519d4ba5d79",
+            "totalGas": 3353488,
+            "executionGas": 2952200,
+            "intrinsicGas": 401288,
+            "gasRefund": 0,
+            "calldataBytes": 29828,
+            "calldataSha256": "8fbf0cda507bbfbb72d592afd48ce693e2649673f84dfa34c31a96f030822a1b",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 14 via batch16",
+            "blockNumber": "72",
+            "success": true,
+            "transactionHash": "0x61ba3561f8fea12b72ec310ba34d55492172ea9d5c766f0b5f39a8f716d4dfc8",
+            "totalGas": 287775,
+            "executionGas": 264963,
+            "intrinsicGas": 27612,
+            "gasRefund": 4800,
+            "calldataBytes": 516,
+            "calldataSha256": "18d42aae12ea6a3ab4889c1c10ce1065cddeb49c5e31e6b180bbe23b61ab5962",
+            "receiptStatus": 1
+          },
+          {
+            "label": "eight-input consolidation",
+            "blockNumber": "73",
+            "success": true,
+            "transactionHash": "0x2b744db2af491b68d13447d3877fb06c7da93dca83956a571b7c1a2cddf3119a",
+            "totalGas": 651335,
+            "executionGas": 603303,
+            "intrinsicGas": 48032,
+            "gasRefund": 0,
+            "calldataBytes": 2084,
+            "calldataSha256": "992cdef73ac81993e9572ec301d3a42279e7db041ad8884f53953463237ff0c3",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "74",
+            "success": true,
+            "transactionHash": "0x5948cce25a95d3a126eb91944b7422bd37f5c8141de7080d297b01681b743b07",
+            "totalGas": 280996,
+            "executionGas": 253408,
+            "intrinsicGas": 27588,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "585b3f9375d273e9b05af0119b01d74c44c87172936d7abafed912f3ae7ab8f1",
+            "receiptStatus": 1
+          },
+          {
+            "label": "consolidation exit",
+            "blockNumber": "75",
+            "success": true,
+            "transactionHash": "0x75de2270e274dafb06256797239915c7c3e7f7f5c317a0bc7c00e199842d1602",
+            "totalGas": 436888,
+            "executionGas": 408392,
+            "intrinsicGas": 28496,
+            "gasRefund": 0,
+            "calldataBytes": 644,
+            "calldataSha256": "118cde9513cb29cb805b8ae7e3bf2c70cc661ab5f2fca159bcbb9bdf7a72afc0",
+            "receiptStatus": 1
+          },
+          {
+            "label": "single queued transfer",
+            "blockNumber": "76",
+            "success": true,
+            "transactionHash": "0x5f5f14ebdaa2710c7b8f920ffdda789dbbff1b33bdc76841cd5d9c82b8a56f45",
+            "totalGas": 451752,
+            "executionGas": 406816,
+            "intrinsicGas": 44936,
+            "gasRefund": 0,
+            "calldataBytes": 1892,
+            "calldataSha256": "a52bbedb8a9fd99fe69bfee8af27f07114569cc5681ec9622183e7807f1c6cb4",
+            "receiptStatus": 1
+          },
+          {
+            "label": "queued exit",
+            "blockNumber": "77",
+            "success": true,
+            "transactionHash": "0x72b7eb35dc06d496164649c1a3b7f5f553e40acedadac0eb492074b4e15e0a56",
+            "totalGas": 446403,
+            "executionGas": 417919,
+            "intrinsicGas": 28484,
+            "gasRefund": 0,
+            "calldataBytes": 644,
+            "calldataSha256": "f999a8205aad53f82684689a29b60677ace948fc20c8df47c05fdf18e4bd6d1f",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "78",
+            "success": true,
+            "transactionHash": "0x464e99af7e705d962d4091abef5a021ea2cda54165159291650d11e5a61d356b",
+            "totalGas": 280960,
+            "executionGas": 253408,
+            "intrinsicGas": 27552,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "0662c90678e62bb14767a572bf3c2b70cacd36ccbfe2b428514795e84afa65a3",
+            "receiptStatus": 1
+          },
+          {
+            "label": "skip zero entry",
+            "blockNumber": "80",
+            "success": true,
+            "transactionHash": "0x622024b19a64dcef7d51d8d9525f87ebacff48c2c4a5920f3463bab9396134a1",
+            "totalGas": 61948,
+            "executionGas": 47892,
+            "intrinsicGas": 23656,
+            "gasRefund": 9600,
+            "calldataBytes": 388,
+            "calldataSha256": "2c97d814fd4d749fd2326c028e0ea7b77ddc75220f2dfa4a80fa3811ce22ca0b",
+            "receiptStatus": 1
+          },
+          {
+            "label": "claim insertion credit",
+            "blockNumber": "83",
+            "success": true,
+            "transactionHash": "0x6ce5c773ba5ff6f22dd4ef99ecc5bbe11f01ba909a117c800f8d934cf46782ba",
+            "totalGas": 63187,
+            "executionGas": 51215,
+            "intrinsicGas": 21572,
+            "gasRefund": 9600,
+            "calldataBytes": 68,
+            "calldataSha256": "234bfa218684330a4a0884b81b3264dd6e8b366eb11b7d5672d314f2fe7466ec",
+            "receiptStatus": 1
+          },
+          {
+            "label": "no-return token deposit",
+            "blockNumber": "99",
+            "success": true,
+            "transactionHash": "0x3e528966c1b0a59eba44e9b74eb7424a5c14ed053d255d764c53364f236bfa19",
+            "totalGas": 127001,
+            "executionGas": 103057,
+            "intrinsicGas": 23944,
+            "gasRefund": 0,
+            "calldataBytes": 292,
+            "calldataSha256": "76c3f793e581a7f9e3ff1184142bc6e7907314d52d38c145097fd4958ca75b8f",
+            "receiptStatus": 1
+          }
+        ],
+        "finalLedger": {
+          "entries": 47,
+          "inserted": 46,
+          "notes": 103
+        }
+      }
+    },
+    {
+      "schema": 1,
+      "developmentOnly": true,
+      "chain": "local EVM",
+      "hardfork": "cancun",
+      "transactionRunner": "VM.runTx",
+      "hardware": {
+        "arch": "arm64",
+        "cpu": "Apple M5",
+        "logicalCpus": 10,
+        "memoryBytes": 34359738368,
+        "node": "v24.19.0"
+      },
+      "result": {
+        "profile": "hashed",
+        "checks": [
+          "first token deposit spent under intermediate root; reward recipient bound",
+          "onward payment, envelope binding, double-spend refusal, authenticated insertion",
+          "token pause, false, no-op, tax, surcharge and malformed return roll back spend",
+          "two-note complete exit advances idle queue without rotating note root",
+          "ETH first-deposit spending; recipient refusal restores spend; unrelated token pause does not block exit",
+          "multi-deposit exact records and one token pull; real full and partial 16-entry insertion",
+          "standalone verifier batches 1/2/4/8/16; altered statements, swapped inputs, foreign points and noncanonical encodings rejected",
+          "skipped-tip sum above uint128 retains exact credit; full-tree guards precede proof verification",
+          "real Groth16 aggregation, stale skips and refunds, atomic invalid-proof rollback, subsequent insertion",
+          "eight-input conservation followed by insertion and complete withdrawal",
+          "zero-entry skip, top-ups, credit rollback and reentrancy protection",
+          "token admission exact debit/credit and no-return compatibility"
+        ],
+        "proving": [
+          {
+            "circuit": "directh",
+            "witnessSeconds": 0.453944167,
+            "provingSeconds": 5.994005833,
+            "maxRssKiB": 4938688,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.316195875,
+            "provingSeconds": 3.213912125,
+            "maxRssKiB": 3781488,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.398563125,
+            "provingSeconds": 5.251845417,
+            "maxRssKiB": 4984128,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.31602162500000003,
+            "provingSeconds": 3.224817,
+            "maxRssKiB": 3688560,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.402214,
+            "provingSeconds": 5.219803208999999,
+            "maxRssKiB": 5252176,
+            "workers": 10
+          },
+          {
+            "circuit": "exith",
+            "witnessSeconds": 0.240481458,
+            "provingSeconds": 2.8893949169999997,
+            "maxRssKiB": 3450928,
+            "workers": 10
+          },
+          {
+            "circuit": "directh",
+            "witnessSeconds": 0.45172745799999997,
+            "provingSeconds": 5.972843375,
+            "maxRssKiB": 4516592,
+            "workers": 10
+          },
+          {
+            "circuit": "exith",
+            "witnessSeconds": 0.2388985,
+            "provingSeconds": 2.840596375,
+            "maxRssKiB": 3564832,
+            "workers": 10
+          },
+          {
+            "circuit": "exith",
+            "witnessSeconds": 0.237511625,
+            "provingSeconds": 2.77002025,
+            "maxRssKiB": 3493808,
+            "workers": 10
+          },
+          {
+            "circuit": "batch16",
+            "witnessSeconds": 2.724806917,
+            "provingSeconds": 42.756829167,
+            "maxRssKiB": 16408912,
+            "workers": 10
+          },
+          {
+            "circuit": "batch16",
+            "witnessSeconds": 2.748765125,
+            "provingSeconds": 40.775318166999995,
+            "maxRssKiB": 17288944,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.325049791,
+            "provingSeconds": 3.0598175839999997,
+            "maxRssKiB": 3812432,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.32148958299999997,
+            "provingSeconds": 2.985694292,
+            "maxRssKiB": 3824640,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.319321916,
+            "provingSeconds": 2.99616625,
+            "maxRssKiB": 3842688,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.31675925,
+            "provingSeconds": 3.008826958,
+            "maxRssKiB": 3815168,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.314732125,
+            "provingSeconds": 2.991900375,
+            "maxRssKiB": 3676976,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.314956208,
+            "provingSeconds": 2.952386959,
+            "maxRssKiB": 3744544,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.315252792,
+            "provingSeconds": 2.9484579170000003,
+            "maxRssKiB": 3617072,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.313026667,
+            "provingSeconds": 2.989557958,
+            "maxRssKiB": 3891248,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.31373275,
+            "provingSeconds": 3.02860775,
+            "maxRssKiB": 3740096,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.310844875,
+            "provingSeconds": 3.0391405419999997,
+            "maxRssKiB": 3607024,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.313887625,
+            "provingSeconds": 2.992138083,
+            "maxRssKiB": 3748432,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.31504708300000006,
+            "provingSeconds": 2.980927791,
+            "maxRssKiB": 3711776,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.312125042,
+            "provingSeconds": 2.972697833,
+            "maxRssKiB": 3757984,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.31454762500000005,
+            "provingSeconds": 2.98586425,
+            "maxRssKiB": 3663792,
+            "workers": 10
+          },
+          {
+            "circuit": "batch16",
+            "witnessSeconds": 2.728774,
+            "provingSeconds": 43.230797833000004,
+            "maxRssKiB": 16515984,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer84h",
+            "witnessSeconds": 0.4839629160000001,
+            "provingSeconds": 5.806748542,
+            "maxRssKiB": 5168960,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.414905625,
+            "provingSeconds": 4.832445957999999,
+            "maxRssKiB": 5107456,
+            "workers": 10
+          },
+          {
+            "circuit": "exith",
+            "witnessSeconds": 0.248417333,
+            "provingSeconds": 2.8032827909999996,
+            "maxRssKiB": 3524400,
+            "workers": 10
+          },
+          {
+            "circuit": "transfer24h",
+            "witnessSeconds": 0.329186583,
+            "provingSeconds": 3.0802911670000004,
+            "maxRssKiB": 3643360,
+            "workers": 10
+          },
+          {
+            "circuit": "exith",
+            "witnessSeconds": 0.23980325,
+            "provingSeconds": 2.787505166,
+            "maxRssKiB": 3298112,
+            "workers": 10
+          },
+          {
+            "circuit": "batch1",
+            "witnessSeconds": 0.399744833,
+            "provingSeconds": 4.872538875,
+            "maxRssKiB": 5098448,
+            "workers": 10
+          }
+        ],
+        "transactions": [
+          {
+            "label": "deploy verifier transfer24h",
+            "blockNumber": "1",
+            "success": true,
+            "transactionHash": "0x44bbe4f9ece2bfab068438ca41ae7f5e2954beaca2005c6b79175cd729b09363",
+            "totalGas": 1244056,
+            "executionGas": 1092154,
+            "intrinsicGas": 151902,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "1afd7e0d0b63d621b24b0f21e0b15083e800d156d083165833279b4fc18f6ce9",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier transfer84h",
+            "blockNumber": "2",
+            "success": true,
+            "transactionHash": "0x13f80505a9e608670cefc33f94b435393d12777d9b6001c37ae18831a2ecca46",
+            "totalGas": 1244044,
+            "executionGas": 1092154,
+            "intrinsicGas": 151890,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "098b04b74a4e0c5867cac65893b460defcc7e0323671fe715732d367610337a0",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier exith",
+            "blockNumber": "3",
+            "success": true,
+            "transactionHash": "0xe84a9e3b682705c9f042beb86291d44d1aad72e0099eb3d683720d9953df6e41",
+            "totalGas": 1244056,
+            "executionGas": 1092154,
+            "intrinsicGas": 151902,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "7de4c45ada3a95fb5d47bc4d62539bb4066ba018588ce48428f037056cdb1260",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier batch1",
+            "blockNumber": "4",
+            "success": true,
+            "transactionHash": "0x9b6cadcbf4522fa0314546067a9e12cdb388c80ad6a460f79ab94a21ff2dd391",
+            "totalGas": 1244056,
+            "executionGas": 1092154,
+            "intrinsicGas": 151902,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "8fb1194b499e41ea81d581bb52a7916997ed419b4ba4ba96877c940913c173f8",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier batch16",
+            "blockNumber": "5",
+            "success": true,
+            "transactionHash": "0x8b6b15f746a9c3a0c3bc9b36f844d0cc1068f7710b0b6f3f4f6e7620603adc62",
+            "totalGas": 1244056,
+            "executionGas": 1092154,
+            "intrinsicGas": 151902,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "3d60fe8b5cca5e22122fc6c82fe5db0c0ad7018167e9f2a598e6b40f1e23b43d",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy verifier directh",
+            "blockNumber": "6",
+            "success": true,
+            "transactionHash": "0x4411317fdb8f31c323109f4eb64f42310e6c9690349029a89f5e74d03dacf4ef",
+            "totalGas": 1244032,
+            "executionGas": 1092154,
+            "intrinsicGas": 151878,
+            "gasRefund": 0,
+            "calldataBytes": 7124,
+            "calldataSha256": "f50fd845a2ac6baa943f23e02fb04dd22052acdac31bf931ab64d9dc2a22c395",
+            "receiptStatus": 1
+          },
+          {
+            "label": "deploy pool",
+            "blockNumber": "9",
+            "success": true,
+            "transactionHash": "0xe079d07a006e9675d2b389c6f177306a2e02e455ac14efdbe530707d2ca03c2f",
+            "totalGas": 5655694,
+            "executionGas": 5170234,
+            "intrinsicGas": 485460,
+            "gasRefund": 0,
+            "calldataBytes": 28724,
+            "calldataSha256": "14c86dcc10283c820a3b16f835d98d15f0a1754a3dc07fcc005df6c39acb840f",
+            "receiptStatus": 1
+          },
+          {
+            "label": "first token deposit",
+            "blockNumber": "14",
+            "success": true,
+            "transactionHash": "0xae772751cc7c331cfcc47cdd029931ccca4d5b33f4d5d4ed44db8224ecc3ef4d",
+            "totalGas": 213279,
+            "executionGas": 189335,
+            "intrinsicGas": 23944,
+            "gasRefund": 0,
+            "calldataBytes": 292,
+            "calldataSha256": "19d2d438ff44a04fd64538e8b9da8d16adbb9f6d9113f67cbb4c2ad4e55080e3",
+            "receiptStatus": 1
+          },
+          {
+            "label": "direct first deposit",
+            "blockNumber": "17",
+            "success": true,
+            "transactionHash": "0xab069248a21c47c7bd8f819e91b96ed522aaba63bef4179d9beeecb87dae55d0",
+            "totalGas": 456607,
+            "executionGas": 416747,
+            "intrinsicGas": 49460,
+            "gasRefund": 9600,
+            "calldataBytes": 2372,
+            "calldataSha256": "010bced8b0a6e7141b4502246d50af9c349119f02d0e8a16696c0440a3662986",
+            "receiptStatus": 1
+          },
+          {
+            "label": "single queued transfer",
+            "blockNumber": "20",
+            "success": true,
+            "transactionHash": "0x7c9b65df3c08ea76cf76187293114540910cb53f8ddbc47c2690ed97c9f0f61f",
+            "totalGas": 386411,
+            "executionGas": 341499,
+            "intrinsicGas": 44912,
+            "gasRefund": 0,
+            "calldataBytes": 1892,
+            "calldataSha256": "921eb088b5183fb291332fda9fbd81de3687fcfbe71edf72d2570f1a53f6fdbe",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "23",
+            "success": true,
+            "transactionHash": "0x82b6101b67b64ad64848fa85ae24ebbcf39e4c8e7d58e8f14ef0c225a9d16e5b",
+            "totalGas": 287655,
+            "executionGas": 264867,
+            "intrinsicGas": 27588,
+            "gasRefund": 4800,
+            "calldataBytes": 516,
+            "calldataSha256": "c61a2a00975dc3efc5aa76d2ababfcb3856acaa88814fb586b640bc714a93e04",
+            "receiptStatus": 1
+          },
+          {
+            "label": "token withdrawal with change",
+            "blockNumber": "39",
+            "success": true,
+            "transactionHash": "0x6bab15ee53f08b92a49206d0195a378403893298927915694ad1d8b4341e7f32",
+            "totalGas": 404915,
+            "executionGas": 359727,
+            "intrinsicGas": 45188,
+            "gasRefund": 0,
+            "calldataBytes": 1892,
+            "calldataSha256": "de9bfd74d69c8bfcad81f87a7f569ea8e6febbff3789cd1b671201b189a938e4",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "40",
+            "success": true,
+            "transactionHash": "0xcedb99f21d8a1fe1d58efd0bb7d8a4c413c5dcbd8c87096199ffabb98398ae80",
+            "totalGas": 281020,
+            "executionGas": 253408,
+            "intrinsicGas": 27612,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "6c0290d301cfdc807f32463d55c3ff41d71afab47a6d862c25bdf2382b8d856e",
+            "receiptStatus": 1
+          },
+          {
+            "label": "two-note token exit",
+            "blockNumber": "41",
+            "success": true,
+            "transactionHash": "0x2b22f23793089d870a62c59e71275c3b1ae5a1a82840ffe2205eb2318b767600",
+            "totalGas": 383014,
+            "executionGas": 354506,
+            "intrinsicGas": 28508,
+            "gasRefund": 0,
+            "calldataBytes": 644,
+            "calldataSha256": "694730b93e24b6125395ede764a1e0702e5fd2662e2a80c902f83ad6bb9c98a3",
+            "receiptStatus": 1
+          },
+          {
+            "label": "ETH deposit",
+            "blockNumber": "42",
+            "success": true,
+            "transactionHash": "0x3b5c7ddb069d7cd08566ccc890e6d4bb568a9514c017111e33ff06418230ab77",
+            "totalGas": 99727,
+            "executionGas": 75771,
+            "intrinsicGas": 23956,
+            "gasRefund": 0,
+            "calldataBytes": 292,
+            "calldataSha256": "d586a729784a933576f9fda00a0cfb0aae321e9fd227d6fca6a9dcad3ed7efd2",
+            "receiptStatus": 1
+          },
+          {
+            "label": "direct first deposit",
+            "blockNumber": "43",
+            "success": true,
+            "transactionHash": "0xc77294019d90ed147542d3d44d6b583a2eecdcdfd2fe85681b286499f23c7939",
+            "totalGas": 414683,
+            "executionGas": 365199,
+            "intrinsicGas": 49484,
+            "gasRefund": 0,
+            "calldataBytes": 2372,
+            "calldataSha256": "cc2abe1b4c864d76fc32f351645feeb092e8a37f676427735a3dd76b6d01ef08",
+            "receiptStatus": 1
+          },
+          {
+            "label": "ETH exit",
+            "blockNumber": "47",
+            "success": true,
+            "transactionHash": "0x681f27077d620ffd1a0218c13cbb36671c3dcd21bb57d2b59e061793c53f282e",
+            "totalGas": 351143,
+            "executionGas": 327423,
+            "intrinsicGas": 28520,
+            "gasRefund": 4800,
+            "calldataBytes": 644,
+            "calldataSha256": "9c1114fc6ae6f0c7ade7f98670bcda5c865f784cedc4459e3bcdf94d433450b6",
+            "receiptStatus": 1
+          },
+          {
+            "label": "depositMany 20",
+            "blockNumber": "49",
+            "success": true,
+            "transactionHash": "0x4ca1c899061b551ca65cadece397e097b95b6cd0aa1e5e11c9e64c1869736939",
+            "totalGas": 975490,
+            "executionGas": 890682,
+            "intrinsicGas": 84808,
+            "gasRefund": 0,
+            "calldataBytes": 7108,
+            "calldataSha256": "c7b1eafa63f773d56c403c78f477ed73b478d93a308319d3088901330c873ac0",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 16 via batch16",
+            "blockNumber": "51",
+            "success": true,
+            "transactionHash": "0x1e0ff8770e1c1201913864051446d7f7480cb81b34a00bb79d1fa9a1472fa531",
+            "totalGas": 292539,
+            "executionGas": 264963,
+            "intrinsicGas": 27576,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "168a030536def19282375631b66e389241f8b70849bef64a0882b6331268307b",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 4 via batch16",
+            "blockNumber": "52",
+            "success": true,
+            "transactionHash": "0x161e10f960fb2d5ea4bc7c29943668ecec2b8a7163312686eca6391508bf5e11",
+            "totalGas": 287763,
+            "executionGas": 264963,
+            "intrinsicGas": 27600,
+            "gasRefund": 4800,
+            "calldataBytes": 516,
+            "calldataSha256": "d2d19ef3fdfb2eef6bcf2f2348daf40bd71b309ea845d6ee7050e9405226f01e",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier single",
+            "blockNumber": "53",
+            "success": true,
+            "transactionHash": "0x8ef218e724be9e64310baf48fda513dbf1135bb16d68f7ea1972adc373cbe9a0",
+            "totalGas": 223126,
+            "executionGas": 197186,
+            "intrinsicGas": 25940,
+            "gasRefund": 0,
+            "calldataBytes": 356,
+            "calldataSha256": "60321f3b8bb224fd42e8545c504bd108b14f145f0f234ca1957eeae0cc54472c",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 1",
+            "blockNumber": "54",
+            "success": true,
+            "transactionHash": "0x4c2126ed813af1aa22afbb61ee70333b0a2a8eeb7353f4314c1ab94aa15114a9",
+            "totalGas": 253342,
+            "executionGas": 227122,
+            "intrinsicGas": 26220,
+            "gasRefund": 0,
+            "calldataBytes": 420,
+            "calldataSha256": "87c972f692543ed6ecc486b990268506c01d382a8a701495eba4ffb5e793df45",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 2",
+            "blockNumber": "55",
+            "success": true,
+            "transactionHash": "0x4efa295fb059f1dcb4bc14fb05431f7b0c55b1c09c317e631ca49d4c90ab2d0d",
+            "totalGas": 309008,
+            "executionGas": 278204,
+            "intrinsicGas": 30804,
+            "gasRefund": 0,
+            "calldataBytes": 708,
+            "calldataSha256": "7037bb531e4c326e13f92b1fd67686e0b836fb0fb05baafc1551d72224fbaa36",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 4",
+            "blockNumber": "56",
+            "success": true,
+            "transactionHash": "0xa3a44392f619cd7bf57576475d18ebc9ea1b36af4f998385e3a972e3d7ed9406",
+            "totalGas": 420342,
+            "executionGas": 380382,
+            "intrinsicGas": 39960,
+            "gasRefund": 0,
+            "calldataBytes": 1284,
+            "calldataSha256": "20d3d75e98494d5071d08d2a2b8d3790fa864188fae89aa3145558d346da71aa",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 8",
+            "blockNumber": "57",
+            "success": true,
+            "transactionHash": "0xb435be452348e8079b2b0994ddf5a6e71cff4e471ad393867b1338bf1ffce550",
+            "totalGas": 643149,
+            "executionGas": 584793,
+            "intrinsicGas": 58356,
+            "gasRefund": 0,
+            "calldataBytes": 2436,
+            "calldataSha256": "c091eb5c9f6191201e1f5ddfc8b1934bb0fa49d2c205b9bf674b6d54e6410f7e",
+            "receiptStatus": 1
+          },
+          {
+            "label": "verifier batch 16",
+            "blockNumber": "58",
+            "success": true,
+            "transactionHash": "0x72117f6aa7a46e667b8ce7eb78947f1f1e7ba5275f3ef31fc8690161578af429",
+            "totalGas": 1088919,
+            "executionGas": 993831,
+            "intrinsicGas": 95088,
+            "gasRefund": 0,
+            "calldataBytes": 4740,
+            "calldataSha256": "6626d5c07f865048e1d154191649124b78f2d5b295677a4fa0c3f15a1ff8b93e",
+            "receiptStatus": 1
+          },
+          {
+            "label": "aggregate 14 included 2 stale",
+            "blockNumber": "70",
+            "success": true,
+            "transactionHash": "0x628fd8d9c19b3e7e9e130873eed8ce4636a24ca623c440c736dfe74f1c1bfbd9",
+            "totalGas": 3124667,
+            "executionGas": 2723403,
+            "intrinsicGas": 401264,
+            "gasRefund": 0,
+            "calldataBytes": 29828,
+            "calldataSha256": "3eefbc0da21932a1084ee149258a9db35d2c064193c970c844de480a67f9332d",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 14 via batch16",
+            "blockNumber": "72",
+            "success": true,
+            "transactionHash": "0x9a91c99b97597e4daae14de6c42374ec40479c78c1261da0cfc6162848d5872d",
+            "totalGas": 287787,
+            "executionGas": 264963,
+            "intrinsicGas": 27624,
+            "gasRefund": 4800,
+            "calldataBytes": 516,
+            "calldataSha256": "65295fe137aed44b3632b409294adc93b6d2905004a48ebb291dd4f63d21cbc2",
+            "receiptStatus": 1
+          },
+          {
+            "label": "eight-input consolidation",
+            "blockNumber": "73",
+            "success": true,
+            "transactionHash": "0x689cb2c338bae1694dfe1562ed2543f7a136989b5f0da862e95f8b2760fae029",
+            "totalGas": 519050,
+            "executionGas": 471066,
+            "intrinsicGas": 47984,
+            "gasRefund": 0,
+            "calldataBytes": 2084,
+            "calldataSha256": "e6f37f34e55d0d6dde527ec11c98874bb976cd8b78334aff4cd76095c353c80c",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "74",
+            "success": true,
+            "transactionHash": "0x59ef75a7d247e27373a3d2963adf2cd055506f2d93ff60502935f1059f5801a9",
+            "totalGas": 281020,
+            "executionGas": 253408,
+            "intrinsicGas": 27612,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "4cd99cd395649aa8885eb31e04f92433aca7c017a9e29a8490eae0cc74eeeda3",
+            "receiptStatus": 1
+          },
+          {
+            "label": "consolidation exit",
+            "blockNumber": "75",
+            "success": true,
+            "transactionHash": "0xc9d7e216f3ede035e1a7f0facd439626996dd72eb18bd2d180889f85bcbc806c",
+            "totalGas": 383002,
+            "executionGas": 354506,
+            "intrinsicGas": 28496,
+            "gasRefund": 0,
+            "calldataBytes": 644,
+            "calldataSha256": "848c622d282e14cf86e292e8de18a7261e118c63e5407dee74dbd587f6287178",
+            "receiptStatus": 1
+          },
+          {
+            "label": "single queued transfer",
+            "blockNumber": "76",
+            "success": true,
+            "transactionHash": "0x99a0f4c083ef042f0292a90ee08693ecd9f78a2e20036d1d86263c7095e0d472",
+            "totalGas": 366511,
+            "executionGas": 321599,
+            "intrinsicGas": 44912,
+            "gasRefund": 0,
+            "calldataBytes": 1892,
+            "calldataSha256": "371c5f02e100d280bb5e3283128cf8111536b1c65f6a448f7fa3d0860b41cd2a",
+            "receiptStatus": 1
+          },
+          {
+            "label": "queued exit",
+            "blockNumber": "77",
+            "success": true,
+            "transactionHash": "0x42343977b37752d9fd1bbd68ab53203ad1025918911bc8d5ad97ce083ac06dac",
+            "totalGas": 392553,
+            "executionGas": 364033,
+            "intrinsicGas": 28520,
+            "gasRefund": 0,
+            "calldataBytes": 644,
+            "calldataSha256": "be0ed7beb3b9ed25118991dbaa3d8dd0c10852ef91b7c63222969289b47bb1a7",
+            "receiptStatus": 1
+          },
+          {
+            "label": "insert 1 via batch1",
+            "blockNumber": "78",
+            "success": true,
+            "transactionHash": "0xa8582d47a7ceeb09a3f1479b5f4a8dc6a0996a15cb12c829d4d74bcc27e2a549",
+            "totalGas": 280972,
+            "executionGas": 253408,
+            "intrinsicGas": 27564,
+            "gasRefund": 0,
+            "calldataBytes": 516,
+            "calldataSha256": "3413242b98ea198bd33ff32431ff4d505bac30b74f1effe54461b17c94ea5120",
+            "receiptStatus": 1
+          },
+          {
+            "label": "skip zero entry",
+            "blockNumber": "80",
+            "success": true,
+            "transactionHash": "0xd97610990d8a3ccb39076baf4c872d78a264bb02535d29b47774be8c93d57849",
+            "totalGas": 61960,
+            "executionGas": 47892,
+            "intrinsicGas": 23668,
+            "gasRefund": 9600,
+            "calldataBytes": 388,
+            "calldataSha256": "9706fdf65d7ab3b6658d795bf447da61d847e2b3910ebd0847c5c97b026c8608",
+            "receiptStatus": 1
+          },
+          {
+            "label": "claim insertion credit",
+            "blockNumber": "83",
+            "success": true,
+            "transactionHash": "0x4609a2767f97ec5a88fdce31b1d8688bf239cd4bec660f2f0a95443bbefae0c1",
+            "totalGas": 63187,
+            "executionGas": 51215,
+            "intrinsicGas": 21572,
+            "gasRefund": 9600,
+            "calldataBytes": 68,
+            "calldataSha256": "81590c105e57a553bdf8ac1c5ef192d72e43fe4c5cee08efc91c833b3e4f517d",
+            "receiptStatus": 1
+          },
+          {
+            "label": "no-return token deposit",
+            "blockNumber": "99",
+            "success": true,
+            "transactionHash": "0x776613766b83fd5790841e19796624d9ba64b87bf9189d3a6b49f6d023b574ac",
+            "totalGas": 127001,
+            "executionGas": 103057,
+            "intrinsicGas": 23944,
+            "gasRefund": 0,
+            "calldataBytes": 292,
+            "calldataSha256": "c7dec5dd4521a79853ed5c5679f85695aa60a1a36079b1af50a6f1600f2b73df",
+            "receiptStatus": 1
+          }
+        ],
+        "finalLedger": {
+          "entries": 47,
+          "inserted": 46,
+          "notes": 103
+        }
+      }
+    }
+  ]
+}
